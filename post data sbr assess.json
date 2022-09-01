@@ -1,0 +1,154 @@
+{
+    "id_alokasi": "45890",
+    "idsbr": "97251660",
+    "alamat": "JALAN RAYA REMBANG BLORA KM 5 RT:  RW:  KODEPOS: 59219",    
+    "aset": null,
+    "jam_buka": null,
+    "jam_tutup": null,
+    "jenis_kelamin_pengusaha": null,
+    "jumlah_kamar": null,
+    "kode_pos": "59219",
+    "kodese": null,
+    "latitude": null,
+    "longitude": null,
+    "multi_national_status": null,
+    "nama": "NATURAL CV <KANTOR>",
+    "nama_komersial": null,
+    "nomor_kode_area": null,
+    "npwp": null,
+    "pajak_tahun_pendaftarannpwp": null,
+    "pajak_tahunspt": null,
+    "pajak_tanggal_update": null,
+    "pendapatan_per_tahun": "4883769100.0",
+    "pengeluaran_per_tahun": "4248879731.0",
+    "pengusaha_pemilik": null,
+    "skala_usaha": null,
+    "status_kepemilikan": null,
+    "tahun_beroperasi": null,
+    "tahun_pendirian": null,
+    "tahun_ref_aset": null,
+    "tahun_ref_kompensasi_asing": null,
+    "tahun_ref_kompensasi_lokal": null,
+    "tahun_ref_pendapatan": null,
+    "tahun_ref_pengeluaran": null,
+    "tahun_ref_skala_usaha": null,
+    "tahun_ref_tenaga_kerja_asing": null,
+    "tahun_ref_tenaga_kerja_lokal": null,
+    "tanggal_lahir_pengusaha": null,
+    "total_kompensasi_asing_per_tahun": null,
+    "total_kompensasi_lokal_per_tahun": null,
+    "total_tenaga_kerja_asing_per_tahun": null,
+    "total_tenaga_kerja_lokal_per_tahun": null,
+    "unit_statistik": null,
+    "jaringan_usaha_id": "2",
+    "jenis_badan_hukum_badan_usaha_id": "2",
+    "kabupaten_kota_id": "17",
+    "kbji_pengusaha_id": null,
+    "kecamatan_id": "100",
+    "kelurahan_desa_id": "002",
+    "kewarganegaraan_pengusaha_id": null,
+    "negara_id": null,
+    "pajak_jeniswp_id": null,
+    "pajak_skala_usaha_id": null,
+    "pajak_statuswp_id": null,
+    "provinsi_id": "33",
+    "sektor_institusi_id": null,
+    "status_perusahaan_id": null,
+
+    "produk_perusahaan": [
+        {
+            "id": null,
+            "produk": "Lorem ipsum",
+            "kbki": null
+        },
+        {
+            "id": 10000,
+            "produk": "Lorem ipsum",
+            "kbki": null
+        }
+    ],
+    "aktivitas_perusahaan": [
+        {
+            "id": null,
+            "aktivitas": "Lorem Ipsum",
+            "jenis": null,
+            "kategori": null,
+            "kbli": null
+        },
+        {
+            "id": 100000,
+            "aktivitas": "Lorem Ipsum",
+            "jenis": null,
+            "kategori": null,
+            "kbli": null
+        }
+    ],        
+    "pemegang_saham": [
+        {
+            "id": null,
+            "pemegang_saham": null,
+            "presentase_saham": null
+        },
+        {
+            "id": 1000000,
+            "pemegang_saham": null,
+            "presentase_saham": null
+        }
+    ],    
+    "alamat_email_perusahaan": [
+        {
+            "id": null,
+            "email": "Lorem Ipsum"
+        },
+        {
+            "id": 100000,
+            "email": "Lorem Ipsum"
+        }
+    ],    
+    "alamat_fax_perusahaan": [
+        {
+            "id": null,
+            "nomor_faksimili": null
+        },
+        {
+            "id": 100000,
+            "nomor_faksimili": null
+        }
+    ],
+    "alamat_telepon_perusahaan": [
+        {
+            "id": null,
+            "nomor_ekstensi": null,
+            "nomor_telepon": null
+        },
+        {
+            "id": 1000000,
+            "nomor_ekstensi": null,
+            "nomor_telepon": null
+        }
+    ],
+    "alamat_web_perusahaan": [
+        {
+            "id": null,
+            "website": "Lorem ipsum"
+        },
+        {
+            "id": 100000,
+            "website": "Lorem ipsum"
+        }
+    ],
+    "kontak_perusahaan": [
+        {
+            "id": null,
+            "email": "Lorem Ipsum",
+            "nama": "Lorem Ipsum",
+            "nomor_telepon": null
+        },
+        {
+            "id": 1000000,
+            "email": "Lorem Ipsum",
+            "nama": "Lorem Ipsum",
+            "nomor_telepon": null
+        }
+    ]
+}
