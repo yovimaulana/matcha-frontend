@@ -1,293 +1,218 @@
 <template>
     <div class="p-grid p-p-0 p-p-sm-1 p-p-md-2 p-p-lg-3 ">
-        <!-- {{this.currentUser()}} -->
-        <!-- <iframe src="https://embed.lottiefiles.com/animation/76498"></iframe> -->
-        <!-- {{kegiatanData.data.matching}} <br><br> -->
-        <!-- {{currentUser}} -->
-         <div :class="'p-col-12 p-lg-12 p-ml-2 p-mr-2 ' ">
-             <Breadcrumb :home="home" :model="items" />
-         </div>
-        
-       
-        <!-- <div v-if="currentUser">
-        {{currentUser.id}}
-        </div> -->
-        <!-- Kegiatan User -->
-        <div class="p-col-12 p-lg-12" v-if="kegiatanData !== null">
-
-            <DataTable :value="kegiatanData.data.users" responsiveLayout="scroll"
-                :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                style="border-radius: 18px;">
-                <Column field="nama_kegiatan" header="Nama Kegiatan"></Column>
-                <Column field="jumlah_matching" header="Jumlah Matching"></Column>
-                <Column field="sisa_matching" header="Sisa Matching"></Column>
-                <Column field="jumlah_assessment" header="Jumlah Assessment"></Column>
-                <Column field="sisa_assessment" header="Sisa Assessment "></Column>
-            </DataTable>
-
-
+        <div class="p-col-12 p-lg-12">
+            <Breadcrumb class="custom-breadcrumb" :home="home" :model="items" />
         </div>
-
-        <!-- Assessment User -->
-
-
-
-
-
+        <Card class="custom-card-matcha">
+            <template #title>
+                <div class="p-grid">
+                    <div class="p-col-6">
+                        <div style="font-size: 1rem">Progres Kegiatan</div>
+                    </div>
+                    <div class="p-col-6" style="text-align: right">
+                        <Dropdown @change="getProgressKegiatanUser(yearSelected)" v-model="yearSelected" :options="yearOption" optionLabel="name" placeholder="Pilih Tahun Kegiatan" />
+                    </div>
+                </div>
+            </template>
+            <template #content>
+                <Skeleton v-show="onLoadData" height="15rem" />
+                <DataTable v-if="kegiatanData != null" :value="kegiatanData.data.users" responsiveLayout="scroll"
+                    class="animate__animated animate__fadeIn"
+                    style="border-radius: 18px;">
+                    <template #empty>
+                        <h5>Data tidak tersedia!</h5>
+                    </template>
+                    <Column field="nama_kegiatan" header="Nama Kegiatan"></Column>
+                    <Column field="jumlah_matching" header="Jumlah Matching">
+                        <template #body="col">
+                            {{col.data.jumlah_matching}} <i v-if="col.data.sisa_matching == '0'" @click="this.downloadReport(col)" class="pi pi-download" style="cursor: pointer; color: green; margin-left: 10px;" v-tooltip.top="'Click to download Report (max: 1000 rows)!'"></i>                            
+                        </template>
+                    </Column>
+                    <Column field="sisa_matching" header="Sisa Matching"></Column>
+                    <Column field="jumlah_assessment" header="Jumlah Assessment">
+                        <template #body="col">
+                            {{col.data.jumlah_assessment}} <i v-if="col.data.sisa_assessment == '0'"  @click="this.downloadReport(col)" class="pi pi-download" style="cursor: pointer; color: green; margin-left: 10px;" v-tooltip.top="'Click to download Report (max: 1000 rows)!'"></i>                            
+                        </template>
+                    </Column>
+                    <Column field="sisa_assessment" header="Sisa Assessment "></Column>
+                </DataTable>
+                <div v-show="onErrorLoad" style="text-align: center">
+                    <img class="errImg" src="../assets/err404.png" alt="Error Image">                    
+                    <Button @click="this.getKegiatanDataUser()" v-tooltip.right="'Click to reload data!'" class="p-button-danger p-button-outlined onclick-btn-custom" style="margin-top: 5px; margin-bottom: 15px" label="RELOAD" icon="pi pi-refresh" />
+                </div>                     
+            </template>
+        </Card>
+        <Toast />
+        <Loading v-model:active="loadingDialog" :is-full-page="true" :color="'#86d166'" :background-color="'black'"
+            :opacity="0.75">
+            <slot>
+                <MyLoading></MyLoading>
+            </slot>
+        </Loading>  
     </div>
 </template>
 
 <script scoped>
-   
     import Breadcrumb from 'primevue/breadcrumb';
-import DataService from '../services/DataService';
+    import DataService from '../services/DataService';
+    import Card from 'primevue/card';
+    import Skeleton from 'primevue/skeleton';
+    import Button from 'primevue/button';
+    import Toast from 'primevue/toast';
+    import exportFromJSON from "export-from-json";
+    import MyLoading from '../components/MyLoading2.vue'
+    import Loading from 'vue-loading-overlay';
+    import 'vue-loading-overlay/dist/vue-loading.css';
     // import UserService from '../services/UserService'
     export default {
         components: {
-           
-            Breadcrumb
+            Breadcrumb,
+            Card,
+            Skeleton,
+            Button,
+            Toast,
+            exportFromJSON,
+            Loading,
+            MyLoading
         },
         data() {
             return {
-                home: {icon: 'pi pi-home', to: '/'},
-            items: [
-                {label: 'Dashboard'},
-                
-            ],
-                myShadow: '',
-                products: [{
-                        "id": "1000",
-                        "code": "f230fh0g3",
-                        "nama": "Yovi",
-                        "totalMatching": 2000,
-                        "sisaMatching": 1340,
-                        "totalAssessment": 580,
-                        "sisaAssessment": 320
+                home: {
+                    icon: 'pi pi-home',
+                    to: '/'
+                },
+                items: [{
+                        label: 'Dashboard'
                     },
-                    {
-                        "id": "1001",
-                        "code": "g230fh0g3",
-                        "nama": "Jo",
-                        "totalMatching": 2040,
-                        "sisaMatching": 1310,
-                        "totalAssessment": 510,
-                        "sisaAssessment": 120
-                    },
-                    {
-                        "id": "1003",
-                        "code": "g230fh4g3",
-                        "nama": "Maulana",
-                        "totalMatching": 1740,
-                        "sisaMatching": 1210,
-                        "totalAssessment": 340,
-                        "sisaAssessment": 190
-                    },
-                    {
-                        "id": "1004",
-                        "code": "g230fx4g3",
-                        "nama": "Athan",
-                        "totalMatching": 1540,
-                        "sisaMatching": 1110,
-                        "totalAssessment": 140,
-                        "sisaAssessment": 160
-                    },
-                    {
-                        "id": "1005",
-                        "code": "g230sx4g3",
-                        "nama": "Putro",
-                        "totalMatching": 2540,
-                        "sisaMatching": 1410,
-                        "totalAssessment": 440,
-                        "sisaAssessment": 130
-                    },
+
                 ],
-                selectedCountry: null,
-                countries: [{
-                        name: 'Kegiatan 1',
-                        code: 'AU'
-                    },
-                    {
-                        name: 'Kegiatan 2',
-                        code: 'BR'
-                    },
-                    {
-                        name: 'Kegiatan 3',
-                        code: 'CN'
-                    },
-                    {
-                        name: 'Kegiatan 4',
-                        code: 'EG'
-                    },
-                    {
-                        name: 'Kegiatan 5',
-                        code: 'FR'
-                    },
-                    {
-                        name: 'Kegiatan 6',
-                        code: 'DE'
-                    },
-                    {
-                        name: 'Kegiatan 7',
-                        code: 'IN'
-                    },
-                    {
-                        name: 'Kegiatan 8',
-                        code: 'JP'
-                    },
-                    {
-                        name: 'Kegiatan 9',
-                        code: 'ES'
-                    },
-                    {
-                        name: 'Kegiatan 10',
-                        code: 'US'
-                    }
+                yearOption: [
+                    {name: '2022', value: '2022'},
+                    {name: '2023', value: '2023'},
+                    {name: '2024', value: '2024'},
+                    {name: '2025', value: '2025'},
+                    {name: '2026', value: '2026'},
+                    {name: '2027', value: '2027'},
+                    {name: '2028', value: '2028'},
+                    {name: 'Show All', value: ''}
                 ],
-                productService: null,
-                headerBg: '#ffffff',
-                textColor: '#726b7c',
-                kegiatanOptions: null,
-                selectedKegiatan: null,
-                kegiatanData : null
+                yearSelected: null,
+                kegiatanData: null,
+                onLoadData: false,
+                onErrorLoad: false,
+                loadingDownload: false, 
+                loadingDialog: false              
             }
         },
-        watch: {
-            myCardBgColorData(newX, oldX) {
-                console.log(`new ${newX}`)
-                if (newX == 'mydarkcardcolor') {
-                    this.headerBg = '#312d4b'
-                    this.textColor = '#cfcbe4'
-                } else {
-                    this.headerBg = '#ffffff'
-                    this.textColor = '#726b7c'
-                }
-                console.log(`old ${oldX}`)
-            },
-              myTextColorData() {
-                return this.$store.state.mainstyle.myTextColorData
-            },
-        },
-       async created(){
-            // this.getAllKegiatan()
+        watch: {},
+        async created() {
             const token = localStorage.getItem('token');
-            await this.$store.dispatch('get_user', token)
-            await  this.getKegiatanDataUser()
+            await this.$store.dispatch('get_user', token)   
+            this.yearSelected = this.yearOption.find(data => data.value == new Date().getFullYear())           
+            await this.getKegiatanDataUser(new Date().getFullYear())
         },
 
-        computed: {
-            myCardBgColorData() {
-                return this.$store.state.mainstyle.myCardBgColorData
-            },
-            myTextColorData() {
-                return this.$store.state.mainstyle.myTextColorData
-            },
+        computed: {            
             currentUser() {
                 return this.$store.state.auth.user
             }
         },
         methods: {
-           async getKegiatanDataUser(){
-                await DataService.getKegiatanDataUser(this.currentUser.id)
-                .then(response => {
-                     this.kegiatanData = response.data
-                    console.log(' this.kegiatanData',  this.kegiatanData)
-                })
-                .catch(error => {
+            async getKegiatanDataUser(year) {
+                this.onLoadData = true
+                this.onErrorLoad = false
+                this.kegiatanData = null
+                try {
+                    const result = await DataService.getKegiatanDataUser(this.currentUser.id, year)
+                    
+                    if(result.data.meta.status == 'error') throw new Error(result.data.meta.message)
+                    
+                    this.onLoadData = false
+                    this.onErrorLoad = false                        
+                    this.kegiatanData = result.data
+                } catch (error) {
+                    this.onLoadData = false
+                    this.onErrorLoad = true
+                    this.$toast.add({severity:'error', summary: 'Error Occured!', detail:'Gagal menampilkan data :(', life: 3000});
                     console.log(error)
-                })
+                }               
+            },
+            getProgressKegiatanUser(year) {
+                this.getKegiatanDataUser(year.value)
+            },
+            async downloadReport(dataReport) {
+                
+                try {
+                    // this.loadingDownload = true
+                    this.loadingDialog = true
+                    const result = await DataService.getReportMatchingUser(this.currentUser.id, dataReport.data.id, (dataReport.field == 'jumlah_matching' ? 'matching' : 'assessment'))
+                    
+                    // export to csv
+                    const data = result.data.data
+                    const fileName = `[REPORT MATCHA] ${dataReport.field == 'jumlah_matcing' ? 'MATCHING' : 'ASSESSMENT'} - `+dataReport.data.nama_kegiatan.toUpperCase();
+                    const exportType = exportFromJSON.types.csv;
+                    if (data) exportFromJSON({ data, fileName, exportType });
+
+                    // this.loadingDownload = false     
+                    this.loadingDialog = false          
+                } catch (error) {
+                    this.$toast.add({severity:'error', summary: 'Error Occured!', detail:'Something went wrong!', life: 3000});
+                    // this.loadingDownload = false
+                    this.loadingDialog = false
+                    console.log(error)
+                }
             }
-         
+
         }
     }
 </script>
 
-<style lang="css" >
+<style scoped>
 
-    td {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    button.onclick-btn-custom {
+        box-shadow: none !important;
+    }    
+
+    ::v-deep(thead th) {
+        background-color: #f3f2f7 !important;
+        vertical-align: top;
+        text-transform: uppercase;
+        font-size: .857rem;
+        letter-spacing: .5px;
     }
 
-    .p-datatable-thead {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    .errImg {        
+        width: 20%;
+        display: block;
+        margin: 0 auto;
     }
 
-    .p-paginator {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    .errMsg {
+        display: block; 
+        margin: 0 auto;
+        width: 70%;
+        padding: 15px;
+        font-size: 12px;
     }
 
-    .p-dropdown-label {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+
+    @media (max-width: 420px) {
+        .errImg {
+            width: 50%;
+        }
+
+        .errMsg {
+            width: 100%;
+        }
+
     }
 
-    .buttonCompareActive {
-        background-color: #9155fd;
-        color: white;
-    }
-
-    .buttonDataSourceActive {
-        background-color: #9155fd;
-        color: white;
-    }
-
-    
-
-    .p-datatable-wrapper {
-        border-radius: 18px;
-    }
-
-    .p-progressbar .p-progressbar-label {
-        color: white;
-        line-height: 1.5rem;
-    }
-
-    .p-breadcrumb{
-        border: none;
-        border-radius: 14px;
-    }
-
-    nav{
-       background-color: v-bind(headerBg) !important;
-        color: v-bind(textColor) !important;
-    }
-
-    .p-menuitem-text{
-        color: v-bind(textColor) !important;
-    }
-
-    .p-breadcrumb ul li .p-breadcrumb-chevron{
-         color: v-bind(textColor) !important;
-    }
-
-    .p-breadcrumb ul li .p-menuitem-link .p-menuitem-icon{
-         color: v-bind(textColor) !important;
-    }
-
-    .p-dropdown .p-dropdown-label .p-placeholder {
-         color: v-bind(textColor) !important;
-    }
-
-    /* .p-tabmenu{
-  background-color: aqua;
-}
-
-.p-tabmenuitem{
-  background-color: red;
-
-}
-.p-highlight{
-  background-color: red !important;background: red;
-}
-.p-tabmenu-nav{
-  background-color: red !important;background: red !important;
-}
-.p-menuitem-text{
-  background-color: red !important;background: red;
-} */
-    /* .ul{
-  background-color: red;
-} */
+    @media (min-width:421px) and (max-width: 720px) {
+        .errImg {
+            width: 30%;
+        }
+        .errMsg {
+            width: 100%;
+        }
+    }    
 </style>

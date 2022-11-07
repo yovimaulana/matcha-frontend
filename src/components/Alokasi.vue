@@ -1,218 +1,76 @@
 <template>
-    <div class="p-grid p-p-0 p-p-sm-1 p-p-md-2 p-p-lg-3 ">
+    <div>
         <Toast />
-        <!-- {{usersKegiatan}} halo -->
         <Loading v-model:active="loadingDialog" :is-full-page="true" :color="'#86d166'" :background-color="'black'"
-            :opacity="0.7">
+            :opacity="0.75">
             <slot>
-
                 <MyLoading></MyLoading>
             </slot>
         </Loading>
         <div class="p-col-12 p-lg-12">
-            <div>
-
-
-            </div>
-
-
-            <!-- <Card @mouseover="myShadow = ''" @mouseleave="myShadow = ''"
-                :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                style="border-radius: 18px;">
-                <template #title>
-
-                </template>
-                <template #content>
-                    <div class="p-col-12">
-
-                        <div>
-
-                            <Dropdown v-if="kegiatanOptions !== null"
-                                :class="'p-col-12 p-lg-12 '+myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                                v-model="selectedKegiatan" :options="kegiatanOptions.data"
-                                @change="getUsersKegiatan(selectedKegiatan)" optionLabel="name" :filter="true"
-                                placeholder="Pilih Kegiatan" :showClear="true">
-                                <template #value="slotProps">
-                                    <div class="country-item country-item-value" v-if="slotProps.value">
-
-                                        <div>{{slotProps.value.name}}</div>
-                                    </div>
-                                    <span v-else>
-                                        {{slotProps.placeholder}}
-                                    </span>
-                                </template>
-                                <template #option="slotProps">
-                                    <div class="country-item">
-
-                                        <div>{{slotProps.option.name}}</div>
-                                    </div>
-                                </template>
-                            </Dropdown>
-                            <br><br>
-
-                            <Card v-if="usersKegiatan !== null" @mouseover="myShadow = ''" @mouseleave="myShadow = ''"
-                                :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                                style="border-radius: 18px;">
-                                <template #title>
-                                    Progress
-                                </template>
-                                <template #content>
-                                    <div class="p-grid p-jc-center " style=" border-left-color: red; ">
-                                        <div class="p-col-3 p-lg-3 p-md-12 p-sm-12">
-                                            <div>
-                                                <span style="font-size: 40px;">
-                                                    {{this.usersKegiatan.data.summary.belum_teralokasi}} </span>
-                                                <br>
-                                                Belum Teralokasi
-                                            </div>
-                                        </div>
-                                        <div class="p-col-1">
-                                            <Divider layout="vertical" />
-                                        </div>
-                                        <div class="p-col-3 p-lg-3 p-md-12 p-sm-12">
-                                            <div>
-                                                <span style="font-size: 40px;">
-                                                    {{this.usersKegiatan.data.summary.teralokasi}} </span>
-                                                <br>
-                                                Sudah Teralokasi
-                                            </div>
-                                        </div>
-                                        <div class="p-col-1">
-                                            <Divider layout="vertical" />
-                                        </div>
-                                        <div class="p-col-3 p-lg-3 p-md-12 p-sm-12">
-                                            <div>
-                                                <span style="font-size: 40px;">
-                                                    {{this.usersKegiatan.data.summary.total_data_matching}}
-                                                </span>
-                                                <br>
-                                                Total
-                                            </div>
-                                        </div>
-                                        <div class="p-col-12 p-mt-4">
-                                            <ProgressBar style="color:white;"
-                                                :value="((this.usersKegiatan.data.summary.teralokasi/this.usersKegiatan.data.summary.total_data_matching)*100).toFixed(2)" />
-
-                                        </div>
-                                    </div>
-                                </template>
-                            </Card>
-                            <br><br>
-                            <div class="p-grid">
-                                <div class="p-col-6 p-lg-6">
-                                    <DataTable v-if="users !== null" :rowHover="true" :value="users.data"
-                                        responsiveLayout="scroll"
-                                        :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn p-col-12'"
-                                        style="">
-                                        <template #header>
-                                            <div style="text-align: left">
-                                                Daftar User
-                                            </div>
-
-
-                                        </template>
-                                        <Column field="name" header="Nama "></Column>
-                                        <Column header="Aksi">
-                                            <template #body="col">
-
-                                                <Button label="Alokasi" @click="alocateSelectedUser(col)"
-                                                    icon="pi pi-arrow-right" />
-                                            </template>
-                                        </Column>
-
-
-                                    </DataTable>
-                                </div>
-
-                                <div class="p-col-6 p-lg-6">
-                                    <DataTable v-if="usersKegiatan !== null" :value="usersKegiatan.data.alokasi"
-                                        responsiveLayout="scroll" :rowHover="true"
-                                        :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn p-col-12'"
-                                        >
-                                        <template #header>
-                                            <div style="text-align: left">
-                                                Daftar User Teralokasi
-                                            </div>
-                                            <div style="text-align: right">
-                                                <Button label="Save" @click="alocateSelectedUser(col)"
-                                                    icon="pi pi-save" />
-                                            </div>
-
-                                        </template>
-                                        <Column field="name" header="Nama"></Column>
-                                        <Column field="jumlah_alokasi" header="Jumlah Alokasi"></Column>
-                                        <Column header="Aksi">
-                                            <template #body="col">
-
-                                                <Button icon="pi pi-pencil" @click="editKeySelected(col)"
-                                                    class="p-button-raised p-mr-2" />
-                                                <Button icon="pi pi-trash" @click="deleteSelectedKeyOption(col)"
-                                                    class="p-button-raised p-button-danger" />
-                                            </template>
-                                        </Column>
-
-                                    </DataTable>
-                                </div>
-                            </div>
-
+            <Breadcrumb class="custom-breadcrumb" :home="home" :model="items" />
+        </div>
+        
+        <Skeleton v-if="kegiatanOptions == null" width="97%" height="3.3rem"
+            style="margin-top: 10px; margin-left: 17px; border-radius: 0.357rem; background-color: #8080802b;" />
+        <Card v-else class="custom-card-matcha ccm-custom">
+            <template #content>                
+                <Dropdown v-model="selectedKegiatan" :options="kegiatanOptions.data" 
+                    optionLabel="name" :filter="true" placeholder="Pilih Kegiatan" :showClear="true"
+                    @change="getUsersKegiatan(selectedKegiatan)" style="width:100%; border: 0; padding: 10px">
+                    <template #value="slotProps">
+                        <div class="data-item data-item-value" v-if="slotProps.value">
+                            <div>{{slotProps.value.name}}</div>
                         </div>
+                        <span v-else>
+                            {{slotProps.placeholder}}
+                        </span>
+                    </template>
+                    <template #option="slotProps">
+                        <div class="data-item">
+                            <div>{{slotProps.option.name}}</div>
+                        </div>
+                    </template>
+                </Dropdown>
+            </template>
+        </Card>  
 
+        <!-- frame ala ala  -->
+        <div class="p-grid p-jc-center">
+            <iframe v-show="isIframeShow && !isFreshLoad" @load="loadIframe()"
+                src="https://embed.lottiefiles.com/animation/106808" style="max-height:100%; overflow: auto;"
+                class="p-mt-4" width="500" height="500" frameBorder="0"></iframe>
+            <Skeleton v-if="!isIframeShow && isFreshLoad" width="500px" height="500px"
+                style="margin-top: 37px; border-radius: 0.357rem; background-color: #8080802b;" />
+        </div>
 
-                    </div>
-
-
-
-                </template>
-
-            </Card> -->
-            <div :class="'p-col-12 p-lg-12 p-ml-2 p-mr-2 ' ">
-                <Breadcrumb :home="home" :model="items" />
-            </div>
-            <Dropdown v-if="kegiatanOptions !== null"
-                :class="'p-col-12 p-lg-12 '+myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                v-model="selectedKegiatan" :options="kegiatanOptions.data" @change="getUsersKegiatan(selectedKegiatan)"
-                optionLabel="name" :filter="true" placeholder="Pilih Kegiatan" :showClear="true">
-                <template #value="slotProps">
-                    <div class="country-item country-item-value" v-if="slotProps.value">
-
-                        <div>{{slotProps.value.name}}</div>
-                    </div>
-                    <span v-else>
-                        {{slotProps.placeholder}}
-                    </span>
-                </template>
-                <template #option="slotProps">
-                    <div class="country-item">
-
-                        <div>{{slotProps.option.name}}</div>
-                    </div>
-                </template>
-            </Dropdown>
+        <div v-if="this.errorMessages.length !== 0" style="text-align: center;">
             <br><br>
+            <img src="../assets/matcha404.png" class="hvr-bob mybob p-mt-1 " style="width: 30%; height: 18%;" alt=""
+                srcset="">
+            <br><br>
+            <h1>Aww...Jangan Nangis.</h1>
+            <h3> Ini cuma error kecil! Ayo kerja lagi</h3>
+            <p style="font-style: italic; ">
+                <span>So little time, so <span style="font-weight: 900;color:#78b34d"> MatchA </span> to do</span>
+            </p>
+            <Message v-for="(error) in this.errorMessages" v-bind:key="error" severity="error">{{error}}</Message>
+        </div>
 
-            <div v-if="this.errorMessages.length !== 0">
-                <br><br>
-                <img src="../assets/matcha404.png" class="hvr-bob mybob p-mt-1 " style="width: 30%; height: 18%;" alt=""
-                    srcset="">
-                <br><br>
-                <h1>Aww...Jangan Nangis.</h1>
-                <h3> Ini cuma error kecil! Ayo kerja lagi</h3>
-                <p style="font-style: italic; ">
-                    <span>So little time, so <span style="font-weight: 900;color:#78b34d"> MatchA </span> to do</span>
-                </p>
-                <Message v-for="(error) in this.errorMessages" v-bind:key="error" severity="error">{{error}}</Message>
-            </div>
-
-            <Card v-if="usersKegiatan !== null" @mouseover="myShadow = ''" @mouseleave="myShadow = ''"
-                :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                style="border-radius: 14px;">
+        <!-- progres alokasi -->
+        <Skeleton v-show="this.onLoadData" height="180px"
+            style="width: calc(100% - 30px); margin-top: 37px; border-radius: 0.357rem; background-color: #8080802b; margin-left: 15px;" />
+        <div class="p-col-12 p-lg-12" style="padding-right: 25px;">
+            <Card v-if="usersKegiatan !== null"
+                class="custom-card-matcha animate__animated animate__fadeIn"
+                style="border-radius: 0.357rem; margin-top: 15px; padding: 15px">
                 <template #title>
-                    Progress
+                    <div style="text-align: center; text-transform: uppercase;">Progress</div>
                 </template>
                 <template #content>
                     <div class="p-grid p-jc-center ">
-                        <div class="p-col-12 p-lg-3 p-md-12 p-sm-12">
-                            <div>
+                        <div class="p-col-12 p-lg-3 p-md-3 p-sm-3">
+                            <div style="text-align: center">
                                 <span style="font-size: 40px;" v-if="this.usersKegiatan.data.summary !== null">
                                     {{this.usersKegiatan.data.summary.belum_teralokasi}} </span>
                                 <br>
@@ -222,8 +80,8 @@
                         <div class="p-col-1">
                             <Divider layout="vertical" />
                         </div>
-                        <div class="p-col-12 p-lg-3 p-md-12 p-sm-12">
-                            <div>
+                        <div class="p-col-12 p-lg-3 p-md-3 p-sm-3">
+                            <div style="text-align: center">
                                 <span style="font-size: 40px;" v-if="this.usersKegiatan.data.summary !== null">
                                     {{this.usersKegiatan.data.summary.teralokasi}} </span>
                                 <br>
@@ -233,80 +91,78 @@
                         <div class="p-col-1">
                             <Divider layout="vertical" />
                         </div>
-                        <div class="p-col-12 p-lg-3 p-md-12 p-sm-12">
-                            <div>
+                        <div class="p-col-12 p-lg-3 p-md-3 p-sm-3">
+                            <div style="text-align: center">
                                 <span style="font-size: 40px;" v-if="this.usersKegiatan.data.summary !== null">
-                                    {{this.tipeAlokasi == 'matching' ? this.usersKegiatan.data.summary.total_data_matching : this.usersKegiatan.data.summary.total_data_matching }}
+                                    {{this.tipeAlokasi == 'matching' ? this.usersKegiatan.data.summary.total_data_matching : this.usersKegiatan.data.summary.total_data_assessment }}
                                 </span>
                                 <br>
                                 Total
                             </div>
                         </div>
                         <div class="p-col-12 p-mt-4" v-if="this.usersKegiatan.data.summary !== null">
-                            <ProgressBar style="color:white;" v-if="tipeAlokasi == 'matching'"
-                                :value="((this.usersKegiatan.data.summary.teralokasi/this.usersKegiatan.data.summary.total_data_matching)*100).toFixed(2)" />
-                            <ProgressBar style="color:white;" v-if="tipeAlokasi == 'assessment'"
-                                :value="((this.usersKegiatan.data.summary.teralokasi/this.usersKegiatan.data.summary.total_data_assessment)*100).toFixed(2)" />
-
+                            <ProgressBar v-if="tipeAlokasi == 'matching'" :value="Number(((this.usersKegiatan.data.summary.teralokasi/this.usersKegiatan.data.summary.total_data_matching)*100).toFixed(2))">
+                                <div style="color: white !important">{{((this.usersKegiatan.data.summary.teralokasi/this.usersKegiatan.data.summary.total_data_matching)*100).toFixed(2)}}%</div>
+                            </ProgressBar>
+                            <ProgressBar v-if="tipeAlokasi == 'assessment'" :value="Number(((this.usersKegiatan.data.summary.teralokasi/this.usersKegiatan.data.summary.total_data_assessment)*100).toFixed(2))">
+                                <div style="color: white !important">{{((this.usersKegiatan.data.summary.teralokasi/this.usersKegiatan.data.summary.total_data_assessment)*100).toFixed(2)}}%</div>
+                            </ProgressBar>
                         </div>
                     </div>
                 </template>
             </Card>
-            <br>
-            <div class="p-grid  ">
+        </div>
+
+        <div class="p-col-12 p-lg-12">                        
+            <div class="p-grid">
                 <div class="p-col-12 p-lg-6">
+                    <Skeleton v-show="this.onLoadData" height="180px"
+                    style="width: calc(100% - 30px); margin-top: 37px; border-radius: 0.357rem; background-color: #8080802b; margin-left: 15px;" />
                     <DataTable v-if="users !== null && usersKegiatan !== null" :rowHover="true" :value="users.data"
-                        responsiveLayout="scroll" :paginator="true" :rows="10"
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        responsiveLayout="scroll" :paginator="true" :rows="10"                        
                         :rowsPerPageOptions="[10,25,50]"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                        style="border-radius: 0px 0px 18px 18px;">
+                        class="p-m-2 animate__animated animate__fadeIn"
+                        style="border-radius: 0px 0px 18px 18px; box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);">
                         <template #header>
-                            <div :class="myCardBgColorData+' '+myTextColorData+' p-col-12 p-grid p-jc-between'"
-                                style="text-align: left">
+                            <div class="p-col-12 p-grid p-jc-between"
+                                style="text-transform: uppercase;">
                                 Daftar User
                             </div>
-
-
                         </template>
-                        <Column field="name" header="Nama "></Column>
+                        <Column field="name" header="Nama"></Column>
                         <Column header="Aksi">
                             <template #body="col">
-
                                 <Button label="Alokasi" @click="alocateSelectedUser(col)" icon="pi pi-arrow-right" />
                             </template>
                         </Column>
-
-
                     </DataTable>
                 </div>
 
                 <div class="p-col-12 p-lg-6">
+                    <Skeleton v-show="this.onLoadData" height="180px"
+                    style="width: calc(100% - 30px); margin-top: 37px; border-radius: 0.357rem; background-color: #8080802b; margin-left: 15px;" />
                     <DataTable v-if="usersKegiatan !== null" :value="usersKegiatan.data.alokasi"
                         responsiveLayout="scroll" :rowHover="true" :paginator="true" :rows="10"
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         :rowsPerPageOptions="[10,25,50]"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                        :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn'"
-                        style="border-radius:0px 0px 18px 18px;">
+                        class="p-m-2 animate__animated animate__fadeIn"
+                        style="border-radius:0px 0px 18px 18px; box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);">
                         <template #header>
-                            <div :class="myCardBgColorData+' '+myTextColorData+' p-col-12 p-grid p-jc-between'"
-                                style="text-align: left">
+                            <div class="p-col-12 p-grid p-jc-between"
+                                style="text-transform: uppercase;">
                                 Daftar User Teralokasi
                                 <div style="text-align: right">
-                                    <Button :loading="loadingButton" label="Save" @click="submitAlokasiFinal()"
-                                        icon="pi pi-save" />
+                                    <Button label="Save" @click="submitAlokasiFinal()"
+                                        icon="pi pi-save" :disabled="this.unsavedChanges.length > 0 ? false : true"  />
                                 </div>
                             </div>
-
-
+                            <div v-show="this.unsavedChanges.length">
+                                <Message :closable="false" severity="warn">Unsaved changes detected: Hit <strong>SAVE</strong> button to save changes!</Message>
+                            </div>
                         </template>
                         <Column field="name" header="Nama"></Column>
                         <Column field="jumlah_alokasi" header="Jumlah Alokasi"></Column>
                         <Column header="Aksi">
                             <template #body="col">
-
                                 <Button icon="pi pi-pencil" @click="editSelectedRow(col)"
                                     class="p-button-raised p-mr-2" />
                                 <Button icon="pi pi-trash" @click="deleteSelectedRowOption(col)"
@@ -317,40 +173,41 @@
                     </DataTable>
                 </div>
             </div>
-
         </div>
 
-        <Dialog :header="'Alokasi '+ this.tipeAlokasi.charAt(0).toUpperCase() + this.tipeAlokasi.slice(1)"
-            v-model:visible="displayAlokasiDialog">
+        <Dialog v-model:visible="displayAlokasiDialog" :closable="false">
+            <template #header>
+                <div style="width: 100%;text-align: center;font-weight: bolder;text-transform: uppercase;">Alokasi {{ this.tipeAlokasi.charAt(0).toUpperCase() + this.tipeAlokasi.slice(1) }}</div>
+            </template>
             <div class="field col-12 md:col-3">
-                <label for="withoutgrouping">Alokasi
-                    {{this.tipeAlokasi.charAt(0).toUpperCase() + this.tipeAlokasi.slice(1)}}</label> <br>
-                <InputNumber :min="1" :max="parseInt(this.usersKegiatan.data.summary.belum_teralokasi)"
-                    id="withoutgrouping" v-model="jumlahAlokasi" mode="decimal" :useGrouping="false" />
+                <label for="withoutgrouping" style="font-size: smaller; color: darkgrey">Jumlah Alokasi</label> <br>
+                <InputNumber @keyup.enter="submitAlokasi" style="width:100%" :min="1" :max="parseInt(this.usersKegiatan.data.summary.belum_teralokasi)"
+                    id="withoutgrouping" v-model="jumlahAlokasi" mode="decimal" :useGrouping="false" autofocus />
             </div>
             <template #footer>
                 <Button label="Cancel" icon="pi pi-times" @click="this.displayAlokasiDialog=false"
                     class="p-button-text" />
-                <Button label="Submit" icon="pi pi-check" @click="submitAlokasi" autofocus />
+                <Button label="Submit" icon="pi pi-check" @click="submitAlokasi" />
             </template>
         </Dialog>
 
-        <Dialog header="Edit Alokasi " v-model:visible="displayEditAlokasiDialog">
+        <Dialog v-model:visible="displayEditAlokasiDialog" :closable="false">
             <template #header>
-                Edit Alokasi {{selectedUser.data.name}}
-
+                <div style="width: 100%;text-align: center;font-weight: bolder;text-transform: uppercase;">Edit Alokasi <br/>{{selectedUser.data.name}}</div>
             </template>
             <div class="field col-12 md:col-3">
-                <label for="withoutgrouping">Edit Alokasi
+                <label style="font-size: smaller; color: darkgrey" for="withoutgrouping">Jumlah Alokasi
                     {{this.tipeAlokasi.charAt(0).toUpperCase() + this.tipeAlokasi.slice(1)}}</label> <br>
-                <InputNumber id="withoutgrouping" :min="1"
+                <InputNumber autofocus style="width:100%" id="withoutgrouping" :min="1"
                     :max="parseInt(this.usersKegiatan.data.summary.belum_teralokasi)+selectedUser.data.jumlah_alokasi"
-                    v-model="editedAlokasi" mode="decimal" :useGrouping="false" />
+                    v-model="editedAlokasi" mode="decimal" :useGrouping="false" 
+                    @keyup.enter="updateAlokasi" 
+                    />
             </div>
             <template #footer>
                 <Button label="Cancel" icon="pi pi-times" @click="this.displayEditAlokasiDialog=false"
                     class="p-button-text" />
-                <Button label="Update" icon="pi pi-check" @click="updateAlokasi" autofocus />
+                <Button label="Update" icon="pi pi-check" @click="updateAlokasi" />
             </template>
         </Dialog>
 
@@ -359,10 +216,6 @@
 
             <p>Apakah Anda yakin ingin menghapus alokasi untuk {{ selectedUser.data.name}} ? Alokasi data akan hilang
                 selamanya.</p>
-
-
-
-
             <template #footer>
                 <Button label="Cancel" icon="pi pi-times" class="p-button-text"
                     @click="displayDeleteAlokasiDialog=false" />
@@ -379,27 +232,19 @@
     import DataService from '../services/DataService'
     import ProgressBar from 'primevue/progressbar';
     import Dialog from 'primevue/dialog'
-
     import InputNumber from 'primevue/inputnumber';
     import Breadcrumb from 'primevue/breadcrumb';
     import Toast from 'primevue/toast';
-    // import Steps from 'primevue/steps';
-
-    // import ProgressBar from 'primevue/progressbar'
-    // import UserService from '../services/UserService'
-
-    import MyLoading from '../components/MyLoading.vue'
+    import MyLoading from '../components/MyLoading2.vue'
     import Message from 'primevue/message'
-
-
     import Loading from 'vue-loading-overlay';
     import 'vue-loading-overlay/dist/vue-loading.css';
+    import Skeleton from 'primevue/skeleton';
     export default {
         props: {
             tipeAlokasi: String,
         },
         components: {
-            // Steps
             ProgressBar,
             Dialog,
             InputNumber,
@@ -407,10 +252,15 @@
             Toast,
             MyLoading,
             Loading,
-            Message
+            Message,
+            Skeleton
         },
         data() {
             return {
+                unsavedChanges: [],
+                isIframeShow: false,
+                isFreshLoad: true,
+                onLoadData: false,
                 home: {
                     icon: 'pi pi-home',
                     // to: '/'
@@ -452,16 +302,8 @@
             }
         },
         async created() {
-            this.getAllUser()
-
-            await DataService.getKegiatanActiveMatchingAssessment(this.tipeAlokasi)
-                .then(response => {
-                    this.kegiatanOptions = response.data
-                    console.log('Daftar Kegiatan', this.kegiatanOptions)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            // this.getAllUser()
+            this.getListKegiatan()            
         },
         watch: {
             myCardBgColorData(newX, oldX) {
@@ -486,166 +328,158 @@
             }
         },
         methods: {
+            async getListKegiatan() {
+                try {
+                    const response = await DataService.getKegiatanActiveMatchingAssessment(this.tipeAlokasi)
+                    this.kegiatanOptions = response.data
+                } catch (error) {
+                    this.onLoadData = false
+                    this.isIframeShow = true
+                    this.isFreshLoad = false
+                    this.toastMessage('error', 'Error!', error.message);
+                }
+            },
+            toastMessage(type, title, message) {
+                this.$toast.add({
+                    severity: type,
+                    summary: title,
+                    detail: message,
+                    life: 2000
+                });
+            },
+            loadIframe() {
+                if(this.allData == null) {
+                    this.isIframeShow = true
+                    this.isFreshLoad = false
+                }
+            },
             async getAllUser() {
-                await DataService.getUsers()
-                    .then(response => {
-                        this.users = response.data
-                        console.log('Daftar User', this.users)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+                try {
+                    const response = await DataService.getUsers()
+                    if(response.data.meta.status == 'error') throw new Error(response.data.meta.message)
+                    this.users = response.data
+                    return response.data.meta.status
+                } catch(error) {
+                    this.onLoadData = false
+                    this.errorMessages.push(error)
+                    this.toastMessage('error', 'Error!', 'Something went wrong!');
+                    return 'error'
+                }
+            },
+            setDefaultCon() {
+                this.errorMessages = []
+                this.successMessage = null
+                this.loadingDialog = false
+                this.isIframeShow = false
+                this.isFreshLoad = false
+                this.usersKegiatan = null
+                this.unsavedChanges = []
+                this.deletedFirstAlokasiUsers = []
+                // this.allData = null
+                // this.sbrData = null
+                // this.matchingData = null
+            },
+            async getAlokasiKegiatan(id_kegiatan, tipe_alokasi) {
+                try {                    
+                    const response = await DataService.getUsersKegiatan(id_kegiatan, tipe_alokasi)
+                    if(response.data.meta.status == 'error') throw new Error(response.data.meta.message)
+                    this.usersKegiatan = response.data
+                    if (this.usersKegiatan.data.alokasi.length > 0) this.checkAvailableUser()
+                    this.onLoadData = false
+                    return response.data.meta.status
+                } catch (error) {
+                    this.onLoadData = false
+                    this.errorMessages.push(error)
+                    this.toastMessage('error', 'Error!', 'Something went wrong!');
+                    return 'error'
+                }
             },
             async getUsersKegiatan(data) {
-                this.loadingDialog = true
-                await DataService.getUsersKegiatan(data.id_kegiatan, this.tipeAlokasi)
-                    .then(response => {
-                        this.errorMessages = []
-                        this.usersKegiatan = response.data
-                        console.log('Selected Kegiatan Users', this.usersKegiatan)
-                        if (this.usersKegiatan.data.alokasi !== null) this.checkAvailableUser()
+                if(data == null) {
+                    this.setDefaultCon()
+                    this.isIframeShow = true
+                    this.isFreshLoad = false
+                    return
+                }
+                
+                this.onLoadData = true
+                this.setDefaultCon();
 
-
-                        this.loadingDialog = false
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        console.log('halo ini error')
-                        this.usersKegiatan = null
-                        this.loadingDialog = false
-                        this.$toast.add({
-                            severity: 'error',
-                            summary: 'Error !',
-                            detail: 'Ups ada error ...',
-                            life: 3000
-                        })
-                        // console.log(`error $error`)
-                        this.errorMessages.push(error.response.data.meta.message)
-                    })
+                const getuserStatus = await this.getAllUser()
+                if(getuserStatus == 'error') return
+                
+                const getAlokasiKegiatanStatus = await this.getAlokasiKegiatan(data.id_kegiatan, this.tipeAlokasi)
+                if(getAlokasiKegiatanStatus == 'error') return                
+                
             },
             checkAvailableUser() {
-                console.log('Cek Selected Kegiatan Users', this.usersKegiatan)
                 this.usersKegiatan.data.alokasi.forEach(element => {
-                    console.log('element', element)
-                    console.log('users', this.users.data)
-                    var findData = this.users.data.find(user => user.id === element.id_user)
-                    console.log('find', findData)
-                    if (findData) {
-                        console.log('true')
-                        console.log('findIndex', this.users.data.findIndex(x => x === findData))
-                        var selectedIndex = this.users.data.findIndex(x => x === findData)
-                        this.deletedUsers.push(this.users.data[selectedIndex])
-                        this.users.data.splice(selectedIndex, 1)
-                        console.log('deletedUsers', this.deletedUsers)
-
-                    } else {
-                        console.log('false')
+                    var userAlokasiIndex = this.users.data.findIndex(user => user.id === element.id_user)
+                    if (userAlokasiIndex > -1) {
+                        this.deletedUsers.push(this.users.data[userAlokasiIndex])
+                        this.users.data.splice(userAlokasiIndex, 1)
                     }
                 });
             },
             alocateSelectedUser(data) {
-                console.log(data)
+                
+                const totalDataMatching = this.tipeAlokasi == 'matching' ? this.usersKegiatan.data.summary.total_data_matching : this.usersKegiatan.data.summary.total_data_assessment
+                const jumlahUser = this.users.data.length
+                const jumlahUserTeralokasi = this.usersKegiatan.data.alokasi.length
+                this.jumlahAlokasi = Math.floor(totalDataMatching / (jumlahUser + jumlahUserTeralokasi))
                 this.selectedUser = data
-                // console.log('length usersKegiatan', this.usersKegiatan.data.alokasi.length)
-                // var usersKegiatanLength = 0
-                // this.usersKegiatan.length == undefined ? usersKegiatanLength = 0 :  usersKegiatanLength = this.usersKegiatan.length
-
-                if (this.usersKegiatan.data.alokasi !== null) {
-                    if (this.tipeAlokasi == 'matching') {
-                        this.jumlahAlokasi = Math.floor(this.usersKegiatan.data.summary.total_data_matching / (this
-                            .users.data
-                            .length + this.usersKegiatan.data.alokasi.length))
-                    } else {
-                        this.jumlahAlokasi = Math.floor(this.usersKegiatan.data.summary.total_data_assessment / (this
-                            .users.data
-                            .length + this.usersKegiatan.data.alokasi.length))
-                    }
-                } else {
-
-                    if (this.tipeAlokasi == 'matching') {
-                        this.jumlahAlokasi = Math.floor(this.usersKegiatan.data.summary.total_data_matching / this.users
-                            .data
-                            .length)
-                    } else {
-                        this.jumlahAlokasi = Math.floor(this.usersKegiatan.data.summary.total_data_assessment / this
-                            .users
-                            .data
-                            .length)
-                    }
-                }
-
-
-                this.displayAlokasiDialog = true
+                this.displayAlokasiDialog = true            
+                
             },
             submitAlokasi() {
-                console.log('selectedUser', this.selectedUser)
-                console.log('jumlahAlokasi', this.jumlahAlokasi)
-                var newUserObject = {
-                    id_user: null,
-                    jumlah_alokasi: null,
-                    name: null
+
+                const userTempAlokasi = {
+                    id_user: this.selectedUser.data.id,
+                    jumlah_alokasi: this.jumlahAlokasi,
+                    name: this.selectedUser.data.name
+                } 
+                
+                if(this.jumlahAlokasi > 0) {
+                    this.unsavedChanges.push(userTempAlokasi)
+                    this.usersKegiatan.data.alokasi.push(userTempAlokasi)
+                    this.deletedFirstAlokasiUsers.push(this.users.data[this.selectedUser.index])
+                    this.users.data.splice(this.selectedUser.index, 1)
+                    this.usersKegiatan.data.summary.belum_teralokasi = this.usersKegiatan.data.summary.belum_teralokasi -
+                        this.jumlahAlokasi
+                    this.usersKegiatan.data.summary.teralokasi = parseInt(this.usersKegiatan.data.summary.teralokasi) + this
+                        .jumlahAlokasi
                 }
-                newUserObject.id_user = this.selectedUser.data.id
-                newUserObject.jumlah_alokasi = this.jumlahAlokasi
-                newUserObject.name = this.selectedUser.data.name
-
-                console.log('newUserObject', newUserObject)
-                if (this.usersKegiatan.data.alokasi == null) {
-                    this.usersKegiatan.data.alokasi = []
-                }
-                this.usersKegiatan.data.alokasi.push(newUserObject)
-
-
-                this.deletedFirstAlokasiUsers.push(this.users.data[this.selectedUser.index])
-                this.users.data.splice(this.selectedUser.index, 1)
-                this.usersKegiatan.data.summary.belum_teralokasi = this.usersKegiatan.data.summary.belum_teralokasi -
-                    this.jumlahAlokasi
-                this.usersKegiatan.data.summary.teralokasi = parseInt(this.usersKegiatan.data.summary.teralokasi) + this
-                    .jumlahAlokasi
-
-
-
+                
                 this.displayAlokasiDialog = false
             },
             async submitAlokasiFinal() {
-                this.loadingButton = true
-                console.log('idKegiatan', this.selectedKegiatan.id_kegiatan)
+                this.loadingDialog = true
+
                 const data = {
                     "id_kegiatan": this.selectedKegiatan.id_kegiatan,
                     "alokasi": this.usersKegiatan.data.alokasi
                 }
 
-                console.log('finalData', data)
-                await DataService.submitAlokasi(this.selectedKegiatan.id_kegiatan, this.tipeAlokasi, data).then(
-                        response => {
-                            console.log('submitAlokasiMatching Response', response)
-                        })
-                    .catch(error => {
-                        console.log(error)
-                    })
-
-                this.getUsersKegiatan(this.selectedKegiatan)
-                this.$toast.add({
-                    severity: 'success',
-                    summary: 'Berhasil !',
-                    detail: 'Alokasi berhasil ditambahkan',
-                    life: 5000
-                })
-                this.loadingButton = false
+                try {
+                    const response = await DataService.submitAlokasi(this.selectedKegiatan.id_kegiatan, this.tipeAlokasi, data)
+                    if(response.data.meta.status == 'error') throw new Error(response.data.meta.message)
+                    this.toastMessage('success', 'Sukses!', response.data.meta.message);
+                    this.loadingDialog = false                                        
+                    this.getUsersKegiatan(this.selectedKegiatan)
+                } catch(error) {
+                    this.loadingDialog = false
+                    this.toastMessage('error', 'Error!', error);
+                }
             },
             editSelectedRow(data) {
-                console.log('editSelectedRow Data', data)
                 this.selectedUser = data
                 this.editedAlokasi = data.data.jumlah_alokasi
                 this.displayEditAlokasiDialog = true
             },
             updateAlokasi() {
-                console.log('update Alokasi', this.selectedUser.data)
+                // console.log('update Alokasi', this.selectedUser.data)
                 const foundIndex = this.usersKegiatan.data.alokasi.findIndex(element => element.id_user == this
                     .selectedUser.data.id_user);
-                console.log('found', foundIndex)
-                console.log('user di Tabel', this.usersKegiatan.data.alokasi[foundIndex])
-
 
                 this.usersKegiatan.data.summary.belum_teralokasi = parseInt(this.usersKegiatan.data.summary
                         .belum_teralokasi) + parseInt(this.usersKegiatan.data.alokasi[foundIndex].jumlah_alokasi) -
@@ -656,26 +490,40 @@
                     this.editedAlokasi)
 
                 this.usersKegiatan.data.alokasi[foundIndex].jumlah_alokasi = this.editedAlokasi
-
+                
+                // untraced changes
+                const unsavedChangesIndex = this.unsavedChanges.findIndex(data => data.id_user == this.selectedUser.data.id_user)
+                if(unsavedChangesIndex == -1) {
+                    this.unsavedChanges.push({
+                        id_user: this.selectedUser.data.id_user,
+                        jumlah_alokasi: this.editedAlokasi,
+                        name: this.selectedUser.data.name
+                    })
+                } else {
+                    this.unsavedChanges[unsavedChangesIndex].jumlah_alokasi = this.editedAlokasi
+                }
 
                 this.displayEditAlokasiDialog = false
+
             },
             deleteSelectedRowOption(data) {
-                console.log('editSelectedRow Data', data)
+                // console.log('editSelectedRow Data', data)                
                 this.selectedUser = data
-
                 this.displayDeleteAlokasiDialog = true
             },
             async deleteFinal() {
-                this.loadingButton = true
-                const userIndex = this.deletedFirstAlokasiUsers.findIndex(element => element.id == this
-                    .selectedUser.data.id_user);
-                console.log('found', userIndex)
-                console.log('id Kegiatan', this.selectedKegiatan.id_kegiatan)
+                this.loadingDialog = true
 
-                if (userIndex !== -1) {
+                const userIndex = this.deletedFirstAlokasiUsers.findIndex(element => element.id == this
+                    .selectedUser.data.id_user);                
+
+                if (userIndex > -1) {
                     this.users.data.push(this.deletedFirstAlokasiUsers[userIndex])
                     this.deletedFirstAlokasiUsers.splice(userIndex, 1)
+                    
+                    // remove untracked changes
+                    const indexUnsaved = this.unsavedChanges.findIndex(data => data.id_user == this.selectedUser.data.id_user)
+                    if(indexUnsaved > -1) this.unsavedChanges.splice(indexUnsaved, 1)
 
                     const userKegiatanIndex = this.usersKegiatan.data.alokasi.findIndex(element => element
                         .id_user == this.selectedUser.data.id_user)
@@ -692,46 +540,66 @@
                     //delete di usersKegiatan
                     this.usersKegiatan.data.alokasi.splice(userKegiatanIndex, 1)
 
-                    //tutup loading dan dialog
-                    this.loadingButton = false
                     this.displayDeleteAlokasiDialog = false
+                    this.loadingDialog = false
+                    
                 } else {
-                    await DataService.deleteAlokasi(this.selectedKegiatan.id_kegiatan, this.tipeAlokasi, this
-                        .selectedUser.data.id_user).then(response => {
-                        console.log('response delete', response.data.meta.message)
+                    try {
+                        const response = await DataService.deleteAlokasi(this.selectedKegiatan.id_kegiatan, this.tipeAlokasi, this.selectedUser.data.id_user)
+                        if(response.data.meta.status == 'error') throw new Error(response.data.meta.message)
+                        this.toastMessage('success', 'Sukses!', response.data.meta.message);
+                        
+                        const deletedIndex = this.usersKegiatan.data.alokasi.findIndex(data => data.id_user == this.selectedUser.data.id_user)
+                        this.usersKegiatan.data.summary.belum_teralokasi = parseInt(this.usersKegiatan.data.summary
+                            .belum_teralokasi) + parseInt(this.usersKegiatan.data.alokasi[deletedIndex].jumlah_alokasi)
+                        this.usersKegiatan.data.summary.teralokasi = parseInt(this.usersKegiatan.data.summary
+                            .teralokasi) - parseInt(this.usersKegiatan.data.alokasi[deletedIndex]
+                            .jumlah_alokasi)
+                        if(deletedIndex > -1) this.usersKegiatan.data.alokasi.splice(deletedIndex, 1)
 
-                        // var newUserObject = {
-                        //     id: null,
+                        const indexUnsaved = this.unsavedChanges.findIndex(data => data.id_user == this.selectedUser.data.id_user)
+                        if(indexUnsaved > -1) this.unsavedChanges.splice(indexUnsaved, 1)
 
-                        //     name: null
-                        // }
-                        // newUserObject.id = this.selectedUser.data.id_user
-                        // newUserObject.name = this.selectedUser.data.name
-                        // console.log('users', this.users)
-                        // this.users.data.push(newUserObject)
-
-                        this.$toast.add({
-                            severity: 'success',
-                            summary: 'Berhasil !',
-                            detail: response.data.meta.message,
-                            life: 5000
-                        })
-                    })
-                    await this.getAllUser()
-                    await this.getUsersKegiatan(this.selectedKegiatan)
-                    this.displayDeleteAlokasiDialog = false
-                    this.loadingButton = false
+                        this.displayDeleteAlokasiDialog = false
+                        this.loadingDialog = false
+                    } catch(error) {
+                        this.toastMessage('error', 'Error!', error);
+                        this.displayDeleteAlokasiDialog = false
+                        this.loadingDialog = false
+                    }
                 }
-
-
-
             }
         }
     }
 </script>
 
-<style lang="css">
-    td {
+<style scoped>
+    ::v-deep(.p-card-body) {
+        padding: 0 !important;
+    }
+
+    ::v-deep(.p-card-content) {
+        padding: 0 !important;
+    }
+
+    ::v-deep(.p-dropdown:not(.p-disabled).p-focus) {
+        box-shadow: none !important;
+    }
+    .ccm-custom {
+        margin-left: 15px;
+        width: calc(100% - 30px);
+    } 
+
+    ::v-deep(thead th) {
+        background-color: #f3f2f7 !important;
+        vertical-align: top;
+        text-transform: uppercase;
+        font-size: .857rem;
+        letter-spacing: .5px;
+        text-align: center !important;
+    }
+    
+    /* td {
         background-color: v-bind(headerBg);
         color: v-bind(textColor);
     }
@@ -774,17 +642,17 @@
 
     :host>>>.p-tabview .p-tabview-panels {
         background-color: red;
-    }
+    } */
 
-    .p-datatable-wrapper {
+    /* .p-datatable-wrapper { */
         /* border-radius: 0px 0px 18px 18px; */
-    }
+    /* } */
 
     /* .p-datatable-header {
         border-radius: 18px 18px 0px 0px;
     } */
 
-    .p-progressbar .p-progressbar-label {
+    /* .p-progressbar .p-progressbar-label {
         color: white;
         line-height: 1.5rem;
     }
@@ -808,10 +676,10 @@
 
     .p-dropdown .p-dropdown-label .p-placeholder {
         color: v-bind(textColor) !important;
-    }
+    } */
 
     /* Bob */
-    @-webkit-keyframes hvr-bob {
+    /* @-webkit-keyframes hvr-bob {
         0% {
             -webkit-transform: translateY(-14px);
             transform: translateY(-14px);
@@ -865,9 +733,9 @@
         -webkit-transform: perspective(1px) translateZ(0);
         transform: perspective(1px) translateZ(0);
         box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    }
+    } */
 
-    .hvr-bob,
+    /* .hvr-bob,
     .hvr-bob,
     .hvr-bob {
         -webkit-animation-name: hvr-bob-float, hvr-bob;
@@ -884,7 +752,7 @@
         animation-fill-mode: forwards;
         -webkit-animation-direction: normal, alternate;
         animation-direction: normal, alternate;
-    }
+    } */
 
 
     /* .p-tabmenu{

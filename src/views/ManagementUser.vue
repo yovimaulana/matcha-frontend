@@ -1,84 +1,97 @@
 <template>
-    <div class="p-grid p-p-0 p-p-sm-1 p-p-md-2 p-p-lg-3 ">
+    <div>
         <Toast />
-
         <div class="p-col-12 p-lg-12">
-
-            <Toolbar class="p-mb-4 p-shadow-6">
-                <template #end>
-                    <Button label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
-                        @click="kegiatanDialog=true;this.resetmodelUser();this.dialogHeader='Tambah User';this.editField = false;" />
-                </template>
-            </Toolbar>
-            <DataTable v-if="daftarUsers  !== null" :value="daftarUsers.data" v-model:filters="filters"
-                filterDisplay="menu" :globalFilterFields="['name','username','email','nip','roles']" :paginator="true"
-                responsiveLayout="scroll" :rows="10" dataKey="id" :rowHover="true"
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                :rowsPerPageOptions="[10,25,50]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-shadow-6 p-m-2 animate__animated animate__fadeIn '">
-
-                <template #header>
-                    <div :class="myCardBgColorData+' '+myTextColorData+' p-col-12 p-grid p-jc-between'">
-
-                        <div :class="myCardBgColorData+' '+myTextColorData+ 'p-jc-start p-col-12 p-lg-3 p-mr-6'">
-                            <h2 class="">Daftar User</h2>
-                        </div>
-                        <div class=" p-col-12 p-lg-3 p-md-6 p-mt-2 p-mr-4 "><span class="p-input-icon-left">
-                                <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
-                            </span></div>
-                    </div>
-                </template>
-
-                <Column field="name" header="Nama"></Column>
-                <Column field="username" header="Username"></Column>
-                <Column field="email" header="Email"></Column>
-                <Column field="nip" header="NIP"></Column>
-                <Column field="roles" header="Role">
-                    <template #body="col">
-                        <div class="p-col p-jc-center" v-for="data in col.data.roles " v-bind:key="data">
-                            <Button label="Admin" v-if="data.id == 1" icon="pi pi-user-plus"
-                                class="p-button-sm p-button-rounded p-mr-2"
-                                style="background-color: #C8E6C9; color: #256029;border-color: #256029; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-                            <Button label="User" v-if="data.id == 2" icon="pi pi-user"
-                                class="p-button-sm p-button-rounded"
-                                style="background-color: #b3e5fc; color: #23547b;border-color: #23547b; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-                        </div>
-                    </template>
-                </Column>
-                <Column header="Aksi">
-                    <template #body="col">
-                        <Button icon="pi pi-pencil" @click="editKeySelected(col)" class="p-button-raised p-mr-2" />
-                        <Button icon="pi pi-trash" @click="deleteSelectedKeyOption(col);this.deleteDialog=true"
-                            class="p-button-raised p-button-danger" />
-                    </template>
-                </Column>
-            </DataTable>
-
-
+            <Breadcrumb class="custom-breadcrumb" :home="home" :model="items" />
         </div>
+        <div v-if="this.daftarUsers == null" class="p-grid">
+            <div class="p-col-6">
+                <Skeleton  width="50%" height="3rem"
+            style="margin-top: 10px; margin-left: 17px; border-radius: 0.357rem; background-color: #8080802b;" />
+            </div>
+            <div class="p-col-6">
+                <Skeleton  width="30%" height="3rem"
+            style="margin-top: 10px; margin-right: 17px; border-radius: 0.357rem; background-color: #8080802b; float: right;" />
+            </div>
+        </div>
+        <Skeleton v-if="this.daftarUsers == null" width="calc(100% - 30px)" height="20rem"
+            style="margin-top: 10px; margin-left: 17px; border-radius: 0.357rem; background-color: #8080802b;" />
+        <Toolbar v-if="this.daftarUsers != null" class="mb-4 ccm-custom" style="border: none; padding-bottom: 0; padding-left: 0; padding-right: 0"> 
+            <template #start>  
+                <h3 style="color: grey; letter-spacing: 0.5px; text-transform: uppercase;">Daftar User</h3>
+            </template>
+            <template #end>
+                <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="addNewUser" />
+            </template>
+        </Toolbar>
+        <DataTable style="box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);" v-if="this.daftarUsers !== null"
+            stateStorage="session" stateKey="dt-state-users"
+            :value="this.daftarUsers" v-model:filters="filters" filterDisplay="menu"
+            :globalFilterFields="['username','name', 'email', 'nip']" :scrollable="true" stripedRows responsiveLayout="scroll"
+            :rowHover="true" dataKey="id" :paginator="true"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            :rowsPerPageOptions="[10,25,50]" :rows="10"
+            class="p-datatable-sm p-m-2 animate__animated animate__fadeIn ccm-custom"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}">
+            <template #empty>
+                <h5>Data tidak tersedia!</h5>
+            </template>
+            <template #loading>
+                Mohon menunggu;
+            </template>
+            <template #header>
+                <div class="flex justify-content-between" style="text-align: right">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" />
+                        <InputText type="text" v-model="filters['global'].value" placeholder="Keyword Search" />
+                    </span>
+                </div>
+            </template>
 
-        <Dialog v-model:visible="kegiatanDialog" :style="{width: '450px'}" :header="dialogHeader" class="p-fluid">
+            <Column field="name" header="Nama" style="width: 20%; flex-wrap: wrap"></Column>
+            <Column field="username" header="Username" style="width: 20%; flex-wrap: wrap"></Column>
+            <Column field="email" header="Email" style="width: 20%; flex-wrap: wrap"></Column>
+            <Column field="nip" header="NIP" style="width: 20%; flex-wrap: wrap"></Column>
+            <Column field="roles" header="Role" style="width: 20%; flex-wrap: wrap">
+                <template #body="col">
+                    <div v-for="data in col.data.roles " v-bind:key="data" style="margin-bottom: 10px;">
+                        <Button :label="data.name" icon="pi pi-user-plus"
+                            class="p-button-sm p-button-rounded p-mr-2 p-tipe-user" :class="data.name.toLowerCase().includes('admin') ? 'team-admin' : 'team-user'"/>                      
+                    </div>                    
+                </template>
+            </Column>                        
+            <Column header="Aksi" style="width: 5%; flex-wrap: wrap">
+                <template #body="col">
+                    <Button v-tooltip.top="'Edit Password'" icon="pi pi-key" @click="editPass(col)" class="p-button-raised p-button-warning p-mr-2 p-mb-2" />
+                    <Button v-tooltip.top="'Edit User'" icon="pi pi-pencil" @click="editKeySelected(col)" class="p-button-raised p-mr-2 p-mb-2" />
+                    <Button v-tooltip.top="'Delete User'" icon="pi pi-trash" @click="deleteSelectedKeyOption(col);this.deleteDialog=true"
+                        class="p-button-raised p-button-danger p-mb-2" />
+                </template>
+            </Column>
+        </DataTable> 
+            
 
+        <Dialog v-model:visible="userDialog" :style="{width: '450px'}" :header="dialogHeader" class="p-fluid" :closable="false">
             <div class="field">
-                <label for="name">Nama</label>
-                <InputText id="name" type="text" v-model="modelUser.name" />
+                <label for="name">Nama <span style="color: red">*</span></label>
+                <InputText id="name" type="text" v-model.trim="modelUser.name" :class="!modelUser.name ? 'p-invalid' : ''" />
+                <small v-if="!modelUser.name" id="name-help" class="p-error">Nama harus terisi!</small>
             </div>
             <br>
             <div class="field">
-                <label for="description">Username</label><br>
-                <InputText id="username" type="text" v-model="modelUser.username" />
+                <label for="description">Username <span style="color: red">*</span></label><br>
+                <InputText id="username" type="text" v-model.trim="modelUser.username" :class="!modelUser.username ? 'p-invalid' : ''" />
+                <small v-if="!modelUser.username" id="username-help" class="p-error">Username harus terisi!</small>
             </div>
             <br>
             <div class="field">
                 <label for="description">Email</label><br>
-                <InputText id="email" type="text" v-model="modelUser.email" />
+                <InputText id="email" type="text" v-model.trim="modelUser.email" />
             </div>
             <br>
             <div class="field">
-                <label for="description">NIP</label><br>
-                <InputText id="nip" type="text" v-model="modelUser.nip" />
+                <label for="nip">NIP</label><br>
+                <InputNumber id="nip" v-model="modelUser.nip" mode="decimal" :useGrouping="false" />
             </div>
             <br>
             <div class="field ">
@@ -98,11 +111,25 @@
 
             <template #footer>
                 <Button label="Cancel" icon="pi pi-times" class="p-button-text"
-                    @click="kegiatanDialog=false; this.resetmodelUser()" />
+                    @click="userDialog=false; this.resetmodelUser()" />
                 <Button :loading="loadingButton" v-if="this.dialogHeader !== 'Edit User'" label="Save"
-                    icon="pi pi-check" class="p-button-text" @click="submit();;" />
-                <Button :loading="loadingButton" v-if="this.dialogHeader == 'Edit User'" label="Updae"
-                    icon="pi pi-check" class="p-button-text" @click="update();;" />
+                    icon="pi pi-check" class="p-button" @click="submit();;" />
+                <Button :loading="loadingButton" v-if="this.dialogHeader == 'Edit User'" label="Update"
+                    icon="pi pi-check" class="p-button" @click="update();;" />
+            </template>
+        </Dialog>
+
+        <Dialog v-model:visible="passwordDialog" style="width: 450px;" header="Edit Password" class="p-fluid" :closable="false"> 
+            <div class="field">
+                <label for="new_password">New Password <span style="color: red">*</span></label>
+                <Password :feedback="false" v-model.trim="newPassword.password" toggleMask :class="!this.newPassword.password ? 'p-invalid': ''" />                
+                <small v-if="!this.newPassword.password" class="p-error">Isian tidak boleh kosong!</small>
+            </div>
+            <template #footer>
+                <Button label="Cancel" icon="pi pi-times" class="p-button-text"
+                    @click="passwordDialog=false; this.newPassword = null" />
+                <Button :loading="loadingButton" label="Update Password"
+                    icon="pi pi-check" class="p-button" @click="updatePassword();" />              
             </template>
         </Dialog>
 
@@ -110,7 +137,7 @@
             <p>Apakah Anda yakin ingin menghapus user? Data user akan hilang selamanya.</p>
             <template #footer>
                 <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="deleteDialog=false" />
-                <Button :loading="loadingButton" label="Yes" icon="pi pi-check" class="p-button-text"
+                <Button :loading="loadingButton" label="Yes" icon="pi pi-check" class="p-button"
                     @click="deleteFinal()" />
             </template>
         </Dialog>
@@ -124,70 +151,49 @@
     import Dialog from 'primevue/dialog'
     import InputText from 'primevue/inputtext';
     import Toast from 'primevue/toast';
+    import Breadcrumb from 'primevue/breadcrumb';
+    import Skeleton from 'primevue/skeleton';
+    import InputNumber from 'primevue/inputnumber';
+    import Tooltip from 'primevue/tooltip';
+    import Password from 'primevue/password';
     import {
-        FilterMatchMode,
-        FilterOperator
+        FilterMatchMode        
     } from 'primevue/api';
-    import Checkbox from 'primevue/checkbox';
-    // import ProgressBar from 'primevue/progressbar'
-    // import UserService from '../services/UserService'
+    import Checkbox from 'primevue/checkbox';    
     export default {
         components: {
             Toolbar,
             Dialog,
             InputText,
             Checkbox,
-            Toast
+            Toast,
+            Breadcrumb,
+            Skeleton,
+            InputNumber,
+            Tooltip,
+            Password
         },
         data() {
             return {
+                home: {
+                    icon: 'pi pi-home',
+                },
+                items: [
+                    {
+                        label: 'Manajemen Kegiatan'
+                    },                
+                ],
                 filters: {
                     'global': {
                         value: null,
                         matchMode: FilterMatchMode.CONTAINS
                     },
-                    'name': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.STARTS_WITH
-                        }]
-                    },
-                    'username': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.STARTS_WITH
-                        }]
-                    },
-                    'email': {
-                        value: null,
-                        matchMode: FilterMatchMode.IN
-                    },
-                    'nip': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.STARTS_WITH
-                        }]
-                    },
-                    'roles': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.EQUALS
-                        }]
-                    }
-                },
-                myShadow: '',
-
-                selectedCountry: null,
-
-                productService: null,
+                }, 
+                passwordDialog: false,
+                newPassword: null,
                 daftarUsers: null,
-                kegiatanDialog: false,
+                userDialog: false,
                 modelUser: {
-
                     name: null,
                     password: null,
                     username: null,
@@ -199,58 +205,76 @@
                 selectedIndex: null,
                 dialogHeader: null,
 
-                // tablestyle
-                headerBg: '#ffffff',
-                textColor: '#726b7c',
-                editField: false,
+                // tablestyle                
                 loadingButton: false,
                 deleteDialog: false,
                 //
             }
         },
-        watch: {
-            myCardBgColorData(newX, oldX) {
-                console.log(`new ${newX}`)
-                if (newX == 'mydarkcardcolor') {
-                    this.headerBg = '#312d4b'
-                    this.textColor = '#cfcbe4'
-                } else {
-                    this.headerBg = '#ffffff'
-                    this.textColor = '#726b7c'
-                }
-                console.log(`old ${oldX}`)
-            }
+        watch: {},
+        created() {
+            this.getAllUsers()
         },
-        async created() {
-            await this.getAllUsers()
-        },
-
-        computed: {
-            myCardBgColorData() {
-                return this.$store.state.mainstyle.myCardBgColorData
-            },
-            myTextColorData() {
-                return this.$store.state.mainstyle.myTextColorData
-            },
-
-
-        },
+        computed: {},
         methods: {
-            async getAllUsers() {
-                await DataService.getAllUsers()
-                    .then(response => {
-                        this.daftarUsers = response.data
-                        console.log('daftarUsers', this.daftarUsers)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
+            async getAllUsers() {                
+                try {
+                    this.daftarUsers = null
+                    const users = await DataService.getAllUsers()                     
+                    this.daftarUsers = users.data.data  
+                } catch (error) {
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: 'Something went wrong!',
+                        life: 2000
+                    });
+                    console.log(error)
+                }            
+            },
+            addNewUser() {
+                this.userDialog = true
+                this.dialogHeader = 'Tambah User'
+            },
+            editPass(data) {
+                this.selectedId = data.data.id
+                this.newPassword = {
+                    "username": data.data.username,
+                    "password": null
+                }
+                this.passwordDialog = true
+            },
+            async updatePassword() {
+                if(!this.newPassword.password) return
+                try {
+                    this.loadingButton = true
+                    const result = await DataService.updatePasswordUser(this.selectedId, this.newPassword)
+                    this.loadingButton = false
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Sukses !!',
+                        detail: 'Berhasil memperbarui password user!',
+                        life: 2000
+                    });
+                    this.passwordDialog = false
+                    this.newPassword = null
+                    this.selectedId = null
+                } catch (error) {
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: 'Something went wrong!',
+                        life: 2000
+                    });
+                    this.loadingButton = false
+                    console.log(error)
+                }
+
             },
             editKeySelected(data) {
-                console.log('data', data)
-                this.editField = true
+                
                 this.dialogHeader = 'Edit User'
-                this.selectedId = data.data.id_kegiatan
+                this.selectedId = data.data.id
                 this.selectedIndex = data.index
 
                 this.modelUser.name = data.data.name
@@ -265,34 +289,38 @@
                         this.modelUser.role.push('ADMIN')
                     }
                 });
-                // this.modelUser.role = data.data.roles
 
-                this.kegiatanDialog = true
+                this.userDialog = true
             },
             async update() {
                 this.loadingButton = true
-                console.log('selectedId', this.modelUser)
-                await DataService.updateKegiatan(this.modelUser.id_kegiatan, this.modelUser).then(
-                        response => {
-                            console.log('Update Kegiatan Response', response)
+                try {
+                    const result = await DataService.updateUser(this.selectedId, this.modelUser)
 
-                        })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                await this.getAllUsers().then(response => {
-                        console.log('All Kegiatan Response', response)
-                        this.kegiatanDialog = false
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                this.$toast.add({
-                    severity: 'success',
-                    summary: 'Berhasil !',
-                    detail: 'Data berhasil diupdate',
-                    life: 3000
-                });
+                    if(result.data.meta.status == 'error') throw new Error(result.data.data.error_message)                    
+
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Berhasil !',
+                        detail: 'Data berhasil diupdate',
+                        life: 2000
+                    });
+
+                    this.loadingButton = false
+                    this.userDialog = false
+                    this.resetmodelUser()
+                    this.getAllUsers()
+                } catch (error) {
+                    this.loadingButton = false
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: error,
+                        life: 2000
+                    });
+                    console.log(error)
+                }               
+                
             },
             resetmodelUser() {
 
@@ -309,141 +337,119 @@
                 this.selectedIndex = null
             },
             async submit() {
-                this.editField = false
+
+                if(!this.modelUser.name || !this.modelUser.username) return                
+                this.modelUser.password = 'admin'
                 this.loadingButton = true
-                console.log('Submit User Baru', this.modelUser)
-                await DataService.addNewUser(this.modelUser).then(response => {
-                        console.log('Post Response', response)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                await this.getAllUsers().then(response => {
-                        console.log('All User Response', response)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                this.kegiatanDialog = false
-                this.loadingButton = false
-                this.$toast.add({
-                    severity: 'success',
-                    summary: 'Berhasil !',
-                    detail: 'Data user berhasil ditambahkan',
-                    life: 3000
-                });
+
+                try {
+                    const result = await DataService.addNewUser(this.modelUser)
+                    if(result.data.meta.status == 'error') throw new Error(result.data.meta.message)
+                    this.userDialog = false
+                    this.resetmodelUser()
+                    this.loadingButton = false
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Sukses !!',
+                        detail: 'Berhasil menyimpan data!',
+                        life: 2000
+                    });
+                    this.getAllUsers()
+                } catch (error) {
+                    this.loadingButton = false
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: error,
+                        life: 2000
+                    });
+                    console.log(error)
+                }                            
             },
             async deleteSelectedKeyOption(data) {
-                console.log('delete', data.data.id_kegiatan)
-                this.selectedId = data.data.id_kegiatan
+                this.selectedId = data.data.id
             },
             async deleteFinal() {
-                const kegiatan = {
-                    "kegiatan": this.selectedId
-                }
-                this.loadingButton = true;
-                await DataService.deleteKegiatan(this.selectedId, kegiatan).then(response => {
-
-                        console.log('Delete Response', response)
-
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                await this.getAllUsers().then(response => {
-
-                        console.log('All Kegiatan Response', response)
-                        this.loadingButton = false
-                        this.deleteDialog = false
-                        this.$toast.add({
-                            severity: 'success',
-                            summary: 'Berhasil !',
-                            detail: 'Data berhasil dihapus',
-                            life: 3000
-                        });
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-
+                this.loadingButton = true
+                try {
+                    const result = await DataService.deleteUser(this.selectedId)
+                    this.loadingButton = false
+                    this.deleteDialog = false
+                    this.selectedId = null
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Sukses !!',
+                        detail: 'Berhasil menghapus data!',
+                        life: 2000
+                    });
+                    this.getAllUsers()
+                } catch (error) {
+                    this.loadingButton = false
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: error,
+                        life: 2000
+                    });
+                    console.log(error)
+                }            
             }
         }
     }
 </script>
 
-<style lang="css">
-    td {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+<style scoped>       
+
+    ::v-deep(tr td) {
+        padding: 30px !important;        
     }
 
-    .p-datatable .p-datatable-header {
-        background: none;
-        color: none;
-        border: none;
+    ::v-deep(thead th) {
+        background-color: #f3f2f7 !important;
+        vertical-align: top;
+        text-transform: uppercase;
+        font-size: .857rem;
+        letter-spacing: .5px;
+        text-align: center !important;
+        height: 80px;
     }
 
-    .p-datatable-thead {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    ::v-deep(div.p-column-header-content) {
+        width: 100%;
     }
 
-    .p-paginator {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    ::v-deep(span.p-column-title) {
+        margin: 0 auto;
     }
 
-    .p-dropdown-label {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    .p-tipe-user {
+        margin: 0 auto;
+        cursor: default;
     }
 
-    .buttonCompareActive {
-        background-color: #9155fd;
-        color: white;
+    .p-tipe-user:focus {
+        box-shadow: none;
     }
 
-    .buttonDataSourceActive {
-        background-color: #9155fd;
-        color: white;
+    .ccm-custom {
+        margin-left: 15px !important;
+        width: calc(100% - 30px);
     }
 
-    :host>>>.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-state-active {
-        background-color: #d90096;
-        border: 1px solid #d600d9;
+    .team-user {
+        background-color: #C8E6C9; 
+        color: #256029;
+        border-color: #256029; 
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: .3px;
     }
-
-    :host>>>.p-tabview .p-tabview-panels {
-        background-color: red;
+    .team-admin {
+        background-color: #b3e5fc; 
+        color: #23547b;
+        border-color: #23547b; 
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: .3px;
     }
-
-    /* .p-datatable-wrapper {
-        border-radius: 18px;
-    } */
-
-    .p-progressbar .p-progressbar-label {
-        color: white;
-        line-height: 1.5rem;
-    }
-
-    /* .p-tabmenu{
-  background-color: aqua;
-}
-
-.p-tabmenuitem{
-  background-color: red;
-
-}
-.p-highlight{
-  background-color: red !important;background: red;
-}
-.p-tabmenu-nav{
-  background-color: red !important;background: red !important;
-}
-.p-menuitem-text{
-  background-color: red !important;background: red;
-} */
-    /* .ul{
-  background-color: red;
-} */
 </style>

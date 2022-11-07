@@ -1,151 +1,179 @@
 <template>
-    <div class="p-grid p-p-0 p-p-sm-1 p-p-md-2 p-p-lg-3 ">
+    <div>
         <Toast />
-
-
-
-        <!-- Matching Assessment User -->
         <div class="p-col-12 p-lg-12">
-            <!-- <Card @mouseover="myShadow = ''" @mouseleave="myShadow = ''"
-                :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                style="border-radius: 18px;">
-                <template #content>
-                    <Toolbar class="p-mb-4">
-                        <template #end>
-                            <Button label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
-                                @click="kegiatanDialog=true;this.resetModelKegiatan();this.dialogHeader='Tambah Kegiatan'" />
-                        </template>
-                    </Toolbar>
-                    <DataTable v-if="daftarKegiatan !== null" :value="daftarKegiatan.data" responsiveLayout="scroll"
-                        :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-m-2 animate__animated animate__fadeIn '"
-                        style="border-radius: 18px;">
-
-                        <Column field="name" header="Nama Kegiatan"></Column>
-                        <Column field="description" header="description"></Column>
-
-                        <Column header="Status Matching" field="matching_active">
-                            <template #body="col">
-
-                                <Button label="Active" v-if="col.data.matching_active == 1" icon="pi pi-check-circle"
-                                    class="p-button-sm p-button-rounded"
-                                    style="background-color: #C8E6C9; color: #256029;border-color: #256029; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-                                <Button label="Inactive" v-if="col.data.matching_active == null"
-                                    icon="pi pi-times-circle" class="p-button-sm p-button-rounded"
-                                    style="background-color: #ffcdd2; color: #c63737;border-color: #c63737; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-
-                            </template>
-                        </Column>
-
-                        <Column header="Status Assessment" field="assessment_active">
-                            <template #body="col">
-
-                                <Button label="Active" v-if="col.data.assessment_active == 1" icon="pi pi-check-circle"
-                                    class="p-button-sm p-button-rounded"
-                                    style="background-color: #C8E6C9; color: #256029;border-color: #256029; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-                                <Button label="Inactive" v-if="col.data.assessment_active == null"
-                                    icon="pi pi-times-circle" class="p-button-sm p-button-rounded"
-                                    style="background-color: #ffcdd2; color: #c63737;border-color: #c63737; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-
-                            </template>
-                        </Column>
-
-                        <Column header="Aksi">
-                            <template #body="col">
-
-                                <Button icon="pi pi-pencil" @click="editKeySelected(col)"
-                                    class="p-button-raised p-mr-2" />
-                                <Button icon="pi pi-trash" @click="deleteSelectedKeyOption(col)"
-                                    class="p-button-raised p-button-danger" />
-                            </template>
-                        </Column>
-                    </DataTable>
-                </template>
-
-            </Card> -->
-            <!-- {{this.daftarKegiatan}} -->
-            <Toolbar class="p-mb-4 p-shadow-6">
-                <template #end>
-                    <Button label="New" icon="pi pi-plus" class="p-button-success p-mr-2"
-                        @click="kegiatanDialog=true;this.resetModelKegiatan();this.dialogHeader='Tambah Kegiatan';this.editField = false;" />
-                </template>
-            </Toolbar>
-            <DataTable v-if="daftarKegiatan !== null" :value="daftarKegiatan.data" 
-            v-model:filters="filters"
-                filterDisplay="menu" :globalFilterFields="['name','username','email','nip','roles']" :paginator="true"
-                responsiveLayout="scroll" :rows="10" dataKey="id" :rowHover="true"
-                paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                :rowsPerPageOptions="[10,25,50]"
-                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                :class="myCardBgColorData+' '+myTextColorData+' '+myShadow+' p-shadow-6 p-m-2 animate__animated animate__fadeIn '"
-                >
-                <template #header>
-                  
-                    <div :class="myCardBgColorData+' '+myTextColorData+' p-col-12 p-grid p-jc-between'">
-
-                        <div :class="myCardBgColorData+' '+myTextColorData+ 'p-jc-start p-col-12 p-lg-3 p-mr-6'">
-                            <h2 class="">Daftar Kegiatan</h2>
-                        </div>
-                        <div class=" p-col-12 p-lg-3 p-mt-2 p-mr-4 "><span class="p-input-icon-left">
-                                <i class="pi pi-search" />
-                                <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
-                            </span></div>
-                    </div>
-
-                   
-                </template>
-
-                <Column field="name" header="Nama Kegiatan"></Column>
-                <Column field="description" header="Deskripsi"></Column>
-
-                <Column header="Status Matching" field="matching_active">
-                    <template #body="col">
-
-                        <Button label="Active" v-if="col.data.matching_active == 1" icon="pi pi-check-circle"
-                            class="p-button-sm p-button-rounded"
-                            style="background-color: #C8E6C9; color: #256029;border-color: #256029; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-                        <Button label="Inactive"
-                            v-if="col.data.matching_active == null || col.data.matching_active == 0"
-                            icon="pi pi-times-circle" class="p-button-sm p-button-rounded"
-                            style="background-color: #ffcdd2; color: #c63737;border-color: #c63737; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-
-                    </template>
-                </Column>
-
-                <Column header="Status Assessment" field="assessment_active">
-                    <template #body="col">
-
-                        <Button label="Active" v-if="col.data.assessment_active == 1" icon="pi pi-check-circle"
-                            class="p-button-sm p-button-rounded"
-                            style="background-color: #C8E6C9; color: #256029;border-color: #256029; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-                        <Button label="Inactive"
-                            v-if="col.data.assessment_active == null || col.data.assessment_active == 0"
-                            icon="pi pi-times-circle" class="p-button-sm p-button-rounded"
-                            style="background-color: #ffcdd2; color: #c63737;border-color: #c63737; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
-
-                    </template>
-                </Column>
-
-                <Column header="Aksi">
-                    <template #body="col">
-
-                        <Button icon="pi pi-pencil" @click="editKeySelected(col)" class="p-button-raised p-mr-2" />
-                        <Button icon="pi pi-trash" @click="deleteSelectedKeyOption(col);this.deleteDialog=true"
-                            class="p-button-raised p-button-danger" />
-                    </template>
-                </Column>
-            </DataTable>
-
-
+            <Breadcrumb class="custom-breadcrumb" :home="home" :model="items" />
         </div>
 
-        <Dialog v-model:visible="kegiatanDialog" :style="{width: '450px'}" :header="dialogHeader" class="p-fluid">
+        <div v-if="this.daftarKegiatan == null" class="p-grid">
+            <div class="p-col-6">
+                <Skeleton  width="50%" height="3rem"
+            style="margin-top: 10px; margin-left: 17px; border-radius: 0.357rem; background-color: #8080802b;" />
+            </div>
+            <div class="p-col-6">
+                <Skeleton  width="30%" height="3rem"
+            style="margin-top: 10px; margin-right: 17px; border-radius: 0.357rem; background-color: #8080802b; float: right;" />
+            </div>
+        </div>        
+        <Skeleton v-if="this.daftarKegiatan == null"  width="calc(100% - 30px)" height="20rem"
+            style="margin-top: 10px; margin-left: 17px; border-radius: 0.357rem; background-color: #8080802b;" />
 
+        <Toolbar v-if="this.daftarKegiatan !== null" class="mb-4 ccm-custom" style="border: none; padding-bottom: 0; padding-left: 0; padding-right: 0"> 
+            <template #start>  
+                <h3 style="color: grey; letter-spacing: 0.5px; text-transform: uppercase;">Daftar Kegiatan</h3>
+            </template>
+            <template #end>
+                <Button label="New" icon="pi pi-plus" class="p-button-success mr-2" @click="addNewKegiatan" />
+            </template>
+        </Toolbar>
+        <DataTable style="box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);" v-if="this.daftarKegiatan !== null"
+            stateStorage="session" stateKey="dt-state-kegiatan"
+            :value="this.daftarKegiatan" v-model:filters="filters" filterDisplay="menu"
+            :globalFilterFields="['name','description']" :scrollable="true" stripedRows responsiveLayout="scroll"
+            :rowHover="true" dataKey="id" :paginator="true"
+            paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+            :rowsPerPageOptions="[10,25,50]" :rows="10"
+            class="p-datatable-sm p-m-2 animate__animated animate__fadeIn ccm-custom"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}">
+            <template #empty>
+                <h5>Data tidak tersedia!</h5>
+            </template>
+            <template #loading>
+                Mohon menunggu;
+            </template>
+            <template #header>
+                <div class="flex justify-content-between" style="text-align: right">
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search" />
+                        <InputText type="text" v-model="filters['global'].value" placeholder="Keyword Search" />
+                    </span>
+                </div>
+            </template>
+
+            <Column field="name" header="Nama Kegiatan"></Column>
+            <Column field="description" header="Deskripsi"></Column>
+            <Column header="Status Matching" field="matching_active">
+                <template #body="col">
+                    <Button @click="changeStatus(col)" v-tooltip.top="'Click to change status!'" label="Active" v-if="col.data.matching_active == 1" icon="pi pi-circle-fill"
+                        class="p-button-sm p-button-rounded p-button-status-matching-assessment"
+                        style="background-color: #aaedf1; color: rgb(8 107 113);border-color: rgb(4 137 145); font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
+                    <Button @click="changeStatus(col)" v-tooltip.top="'Click to change status!'" label="Inactive" v-if="col.data.matching_active == null" icon="pi pi-times-circle"
+                        class="p-button-sm p-button-rounded p-button-status-matching-assessment"
+                        style="background-color: #ffcdd2; color: #c63737;border-color: #c63737; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
+                    <Button @click="changeStatus(col)" v-tooltip.top="'Click to change status!'" label="Done" v-if="col.data.matching_active == 0" icon="pi pi-check-circle"
+                        class="p-button-sm p-button-rounded p-button-status-matching-assessment"
+                        style="background-color: #C8E6C9; color: #256029;border-color: #256029; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
+
+                </template>
+            </Column>
+
+            <Column header="Status Assessment" field="assessment_active">
+                <template #body="col">
+                    <Button @click="changeStatus(col)" v-tooltip.top="'Click to change status!'" label="Active" v-if="col.data.assessment_active == 1" icon="pi pi-circle-fill"
+                        class="p-button-sm p-button-rounded p-button-status-matching-assessment"
+                        style="background-color: #aaedf1; color: rgb(8 107 113);border-color: rgb(4 137 145); font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
+                    <Button @click="changeStatus(col)" v-tooltip.top="'Click to change status!'" label="Inactive" v-if="col.data.assessment_active == null" icon="pi pi-times-circle"
+                        class="p-button-sm p-button-rounded p-button-status-matching-assessment"
+                        style="background-color: #ffcdd2; color: #c63737;border-color: #c63737; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
+                    <Button @click="changeStatus(col)" v-tooltip.top="'Click to change status!'" label="Done" v-if="col.data.assessment_active == 0" icon="pi pi-check-circle"
+                        class="p-button-sm p-button-rounded p-button-status-matching-assessment"
+                        style="background-color: #C8E6C9; color: #256029;border-color: #256029; font-weight: 700;font-size: 12px;letter-spacing: .3px;" />
+
+                </template>
+            </Column>
+
+            <Column header="Aksi">
+                <template #body="col">
+                    <Button icon="pi pi-pencil" @click="editKeySelected(col)" class="p-button-raised p-mr-2" />
+                    <Button icon="pi pi-trash" @click="deleteSelectedKeyOption(col);this.deleteDialog=true"
+                        class="p-button-raised p-button-danger" />
+                </template>
+            </Column>
+        </DataTable>
+
+        <Dialog v-model:visible="statusDialog" style="width: 450px" class="p-fluid" :closable="false">
+            <template #header>
+                <div style="width: 100%;text-align: center;font-weight: bolder;text-transform: uppercase; font-size: larger;">Ubah Status <br/><span style="color:#9155fd; font-style:italic">{{headerStatus}}</span></div>
+            </template>
+            <div class="heading-status-kegiatan-name">
+                {{this.modelKegiatan.name}}
+            </div>
+            <div class="header-status-kegiatan">
+                Current Status: <span>{{this.currentStatusText}}</span>
+            </div>
+            <div class="p-grid">                
+                <div class="field p-col-12 p-lg-6">
+                    <label style="display: block;" class="p-mb-3">Status Matching</label>
+                    <div class="formgrid p-grid">
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton :disabled="headerStatus == 'Assessment'" id="matchingInactive" name="category_matching" value="x" v-model="this.modelKegiatan.matching_active" />
+                            <label class="p-ml-2" for="matchingInactive">Inactive</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton :disabled="headerStatus == 'Assessment'" id="matchingActive" name="category_matching" value="1" v-model="this.modelKegiatan.matching_active" />
+                            <label class="p-ml-2" for="matchingActive">Active</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton :disabled="headerStatus == 'Assessment'" id="matchingDone" name="category_matching" value="0" v-model="this.modelKegiatan.matching_active" />
+                            <label class="p-ml-2" for="matchingDone">Done</label>
+                        </div>
+                    
+                    </div>
+                </div>
+
+                <div class="field p-col-12 p-lg-6" >
+                    <label style="display: block;" class="p-mb-3">Status Assessment</label>
+                    <div class="formgrid grid">
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton :disabled="headerStatus == 'Matching'" id="AssessmentInactive" name="category_assessment" value="x" v-model="this.modelKegiatan.assessment_active" />
+                            <label class="p-ml-2" for="AssessmentInactive">Inactive</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton :disabled="headerStatus == 'Matching'" id="AssessmentActive" name="category_assessment" value="1" v-model="this.modelKegiatan.assessment_active" />
+                            <label class="p-ml-2" for="AssessmentActive">Active</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton :disabled="headerStatus == 'Matching'" id="assessmentDone" name="category_assessment" value="0" v-model="this.modelKegiatan.assessment_active" />
+                            <label class="p-ml-2" for="assessmentDone">Done</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="container-status-matching" v-if="headerStatus == 'Matching' && this.modelKegiatan.matching_active != 'x'">
+                <div class="field col-12 md:col-4">
+                    <label for="start_matching">Start Matching</label>
+                    <InputMask id="start_matching" mask="9999-99-99" v-model="this.modelKegiatan.ma_start" placeholder="9999-99-99" slotChar="yyyy-mm-dd" />
+                    <small class="p-error">Format: Tahun - Bulan - Tanggal</small>
+                </div>
+                <div class="field col-12 md:col-4" style="margin-top:10px" v-if="this.modelKegiatan.matching_active == '0'">
+                    <label for="end_matching">End Matching</label>
+                    <InputMask id="end_matching" mask="9999-99-99" v-model="this.modelKegiatan.ma_end" placeholder="9999-99-99" slotChar="yyyy-mm-dd" />
+                    <small class="p-error">Format: Tahun - Bulan - Tanggal</small>
+                </div>
+            </div>
+
+            <div id="container-status-assessment" v-if="headerStatus == 'Assessment' && this.modelKegiatan.assessment_active != 'x'">
+                <div class="field col-12 md:col-4">
+                    <label for="start_assessment">Start Assessment</label>
+                    <InputMask id="start_assessment" mask="9999-99-99" v-model="this.modelKegiatan.as_start" placeholder="9999-99-99" slotChar="yyyy-mm-dd" />
+                    <small class="p-error">Format: Tahun - Bulan - Tanggal</small>
+                </div>
+                <div class="field col-12 md:col-4" style="margin-top:10px" v-if="this.modelKegiatan.assessment_active == '0'">
+                    <label for="end_assessment">End Assessment</label>
+                    <InputMask id="end_assessment" mask="9999-99-99" v-model="this.modelKegiatan.as_end" placeholder="9999-99-99" slotChar="yyyy-mm-dd" />
+                    <small class="p-error">Format: Tahun - Bulan - Tanggal</small>
+                </div>
+            </div>
+            
+            <template #footer>
+                <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="statusDialog=false; this.resetModelKegiatan()" />
+                <Button :loading="loadingButton" label="Save" icon="pi pi-check" class="p-button" @click="saveChangeStatus();" />
+            </template>
+        </Dialog>
+
+        <Dialog v-model:visible="kegiatanDialog" :style="{width: '450px'}" :header="dialogHeader" class="p-fluid">
             <div class="field">
                 <label for="name">Nama Kegiatan</label>
-                <!-- <InputText id="name" v-model.trim="product.name" required="true" autofocus
-                    :class="{'p-invalid': submitted && !product.name}" />
-                <small class="p-invalid" v-if="submitted && !product.name">Name is required.</small> -->
-
                 <InputText id="name" type="text" v-model="modelKegiatan.name" />
             </div>
             <br>
@@ -154,51 +182,50 @@
                 <Textarea id="description" v-model="modelKegiatan.description" required="true" rows="3" cols="55" />
                 </div>
             <br>
-            <div class="p-grid" v-if="editField">
-            <div class="field p-col-12 p-lg-6">
-                <label class="p-mb-3">Status Matching</label>
-                <div class="formgrid p-grid">
-                    <div class="field-radiobutton p-col-12">
-                        <RadioButton id="matchingActive" name="category" :value="1" v-model="modelKegiatan.matching_active" />
-                        <label class="p-ml-2" for="matchingActive">Active</label>
+            <!-- <div class="p-grid" v-if="editField">
+                <div class="field p-col-12 p-lg-6">
+                    <label style="display: block;" class="p-mb-3">Status Matching</label>
+                    <div class="formgrid p-grid">
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton id="matchingActive" name="category_matching" value="1" v-model="this.modelKegiatan.matching_active" />
+                            <label class="p-ml-2" for="matchingActive">Active</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton id="matchingInactive" name="category_matching" value="x" v-model="this.modelKegiatan.matching_active" />
+                            <label class="p-ml-2" for="matchingInactive">Inactive</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton id="matchingDone" name="category_matching" value="0" v-model="this.modelKegiatan.matching_active" />
+                            <label class="p-ml-2" for="matchingDone">Done</label>
+                        </div>
+                    
                     </div>
-                    <div class="field-radiobutton p-col-12">
-                        <RadioButton id="matchingInctive" name="category" :value="null" v-model="modelKegiatan.matching_active" />
-                        <label class="p-ml-2" for="matchingInctive">Inactive</label>
-                    </div>
-                     <div class="field-radiobutton p-col-12">
-                        <RadioButton id="matchingInctive" name="category" :value="0" v-model="modelKegiatan.matching_active" />
-                        <label class="p-ml-2" for="matchingInctive">Selesai</label>
-                    </div>
-                  
                 </div>
-            </div>
 
-            <div class="field p-col-12 p-lg-6" >
-                <label class="p-mb-3">Status Assessment</label>
-                <div class="formgrid grid">
-                    <div class="field-radiobutton p-col-12">
-                        <RadioButton id="AssessmentActive" name="category" :value="1" v-model="modelKegiatan.assessment_active" />
-                        <label class="p-ml-2" for="AssessmentActive">Active</label>
+                <div class="field p-col-12 p-lg-6" >
+                    <label style="display: block;" class="p-mb-3">Status Assessment</label>
+                    <div class="formgrid grid">
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton id="AssessmentActive" name="category_assessment" value="1" v-model="this.modelKegiatan.assessment_active" />
+                            <label class="p-ml-2" for="AssessmentActive">Active</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton id="AssessmentInactive" name="category_assessment" value="x" v-model="this.modelKegiatan.assessment_active" />
+                            <label class="p-ml-2" for="AssessmentInactive">Inactive</label>
+                        </div>
+                        <div class="field-radiobutton p-col-12">
+                            <RadioButton id="assessmentDone" name="category_assessment" value="0" v-model="this.modelKegiatan.assessment_active" />
+                            <label class="p-ml-2" for="assessmentDone">Done</label>
+                        </div>
+                    
                     </div>
-                    <div class="field-radiobutton p-col-12">
-                        <RadioButton id="AssessmentInactive" name="category" :value="null" v-model="modelKegiatan.assessment_active" />
-                        <label class="p-ml-2" for="AssessmentInactive">Inactive</label>
-                    </div>
-                      <div class="field-radiobutton p-col-12">
-                        <RadioButton id="matchingInctive" name="category" :value="0" v-model="modelKegiatan.matching_active" />
-                        <label class="p-ml-2" for="matchingInctive">Selesai</label>
-                    </div>
-                  
                 </div>
-            </div>
-            </div>
-
+            </div> -->
 
             <template #footer>
                 <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="kegiatanDialog=false; this.resetModelKegiatan()" />
-                <Button :loading="loadingButton" v-if="this.dialogHeader !== 'Edit Kegiatan'" label="Save" icon="pi pi-check" class="p-button-text" @click="submit();;" />
-                 <Button :loading="loadingButton" v-if="this.dialogHeader == 'Edit Kegiatan'" label="Update" icon="pi pi-check" class="p-button-text" @click="update();;" />
+                <Button :loading="loadingButton" v-if="this.dialogHeader !== 'Edit Kegiatan'" label="Save" icon="pi pi-check" class="p-button" @click="submit();;" />
+                <Button :loading="loadingButton" v-if="this.dialogHeader == 'Edit Kegiatan'" label="Update" icon="pi pi-check" class="p-button" @click="update();;" />
             </template>
         </Dialog>
 
@@ -206,38 +233,31 @@
 
             <p>Apakah Anda yakin ingin menghapus kegiatan? Data kegiatan akan hilang selamanya.</p>
    
-           
-
-
             <template #footer>
                 <Button label="Cancel" icon="pi pi-times" class="p-button-text" @click="deleteDialog=false" />
                 <Button :loading="loadingButton" label="Yes" icon="pi pi-check" class="p-button-text" @click="deleteFinal()" />
             </template>
         </Dialog>
 
-        <!-- Assessment User -->
-
-
-
-
-
     </div>
 </template>
 
-<script scoped>
+<script>
     import DataService from '../services/DataService'
+    import Breadcrumb from 'primevue/breadcrumb';
     import Toolbar from 'primevue/toolbar';
     import Dialog from 'primevue/dialog'
     import InputText from 'primevue/inputtext';
     import RadioButton from 'primevue/radiobutton';
     import Textarea from 'primevue/textarea';
-      import Toast from 'primevue/toast';
-      import {
-        FilterMatchMode,
-        FilterOperator
+    import Toast from 'primevue/toast';
+    import Skeleton from 'primevue/skeleton';
+    import Tooltip from 'primevue/tooltip';
+    import InputMask from 'primevue/inputmask';
+    import {
+        FilterMatchMode
     } from 'primevue/api';
-    // import ProgressBar from 'primevue/progressbar'
-    // import UserService from '../services/UserService'
+
     export default {
         components: {
             Toolbar,
@@ -245,60 +265,28 @@
             InputText,
             RadioButton,
             Textarea,
-            Toast
+            Toast,
+            Breadcrumb,
+            Skeleton,
+            Tooltip,
+            InputMask
         },
         data() {
-            return {
+            return {                
+                home: {
+                    icon: 'pi pi-home',
+                },
+                items: [
+                    {
+                        label: 'Manajemen Kegiatan'
+                    },                
+                ],
                 filters: {
                     'global': {
                         value: null,
                         matchMode: FilterMatchMode.CONTAINS
                     },
-                    'name': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.STARTS_WITH
-                        }]
-                    },
-                    'description': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.STARTS_WITH
-                        }]
-                    },
-                    'matching_active': {
-                        value: null,
-                        matchMode: FilterMatchMode.IN
-                    },
-                    'assessment_active': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.DATE_IS
-                        }]
-                    },
-                    'created_at': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.EQUALS
-                        }]
-                    },
-                    'updated_at': {
-                        operator: FilterOperator.AND,
-                        constraints: [{
-                            value: null,
-                            matchMode: FilterMatchMode.EQUALS
-                        }]
-                    }
-                },
-                myShadow: '',
-              
-                selectedCountry: null,
-             
-                productService: null,
+                },                           
                 daftarKegiatan: null,
                 kegiatanDialog: false,
                 modelKegiatan: {
@@ -307,246 +295,325 @@
                     description: null,
                     matching_active: null,
                     assessment_active: null,
+                    ma_start: null,
+                    ma_end: null,
+                    sa_start: null,
+                    sa_end: null
                 },
                 selectedId: null,
                 selectedIndex: null,
                 dialogHeader: null,
                 
-                // tablestyle
-                headerBg: '#ffffff',
-                textColor: '#726b7c',
                 editField: false,
                 loadingButton: false,
                 deleteDialog: false,
-                //
+                statusDialog: false,
+                headerStatus: null,
+                startMatching: null,
+                currentStatusText: null,
             }
         },
-         watch: {
-            myCardBgColorData(newX, oldX) {
-                console.log(`new ${newX}`)
-                if (newX == 'mydarkcardcolor') {
-                    this.headerBg = '#312d4b'
-                    this.textColor = '#cfcbe4'
-                } else {
-                    this.headerBg = '#ffffff'
-                    this.textColor = '#726b7c'
-                }
-                console.log(`old ${oldX}`)
-            }
+        watch: {},
+        created() {
+           this.getAllKegiatan()
         },
-        async created() {
-           await this.getAllKegiatan()
-        },
-
-        computed: {
-            myCardBgColorData() {
-                return this.$store.state.mainstyle.myCardBgColorData
-            },
-            myTextColorData() {
-                return this.$store.state.mainstyle.myTextColorData
-            },
-
-            
-        },
+        computed: {},
         methods:{
             async getAllKegiatan(){
-                 await DataService.getAllKegiatan()
-                .then(response => {
-                    this.daftarKegiatan = response.data
-                    console.log('daftarKegiatan', this.daftarKegiatan)
-                })
-                .catch(error => {
+                try {
+                    this.daftarKegiatan = null
+                    const kegiatan = await DataService.getAllKegiatan()    
+                    this.daftarKegiatan = kegiatan.data.data  
+                } catch (error) {
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: 'Something went wrong!',
+                        life: 2000
+                    });
                     console.log(error)
-                })
+                }                                
             },
-                editKeySelected(data){
-                    console.log('data',data)
-                    this.editField = true
-                    this.dialogHeader = 'Edit Kegiatan'
-                    this.selectedId = data.data.id_kegiatan
-                    this.selectedIndex = data.index
-                    this.modelKegiatan.id_kegiatan = data.data.id_kegiatan
-                    this.modelKegiatan.name = data.data.name
-                    this.modelKegiatan.description = data.data.description
-                    data.data.matching_active == "1" ? this.modelKegiatan.matching_active=true : this.modelKegiatan.matching_active=false 
-                    data.data.assessment_active == "1" ?  this.modelKegiatan.assessment_active=true :  this.modelKegiatan.assessment_active=false 
+            editKeySelected(data){                
 
-                    
-                    
+                this.editField = true
+                this.dialogHeader = 'Edit Kegiatan'
+                this.selectedId = data.data.id_kegiatan
+                this.selectedIndex = data.index
 
-                    console.log(this.modelKegiatan)
-                    this.kegiatanDialog = true
-                },
-                 async    update(){
+                this.modelKegiatan.id_kegiatan = data.data.id_kegiatan
+                this.modelKegiatan.name = data.data.name
+                this.modelKegiatan.description = data.data.description
+                this.modelKegiatan.matching_active = data.data.matching_active ? "1" : (data.data.matching_active == '0'  ? '0' : 'x')
+                this.modelKegiatan.assessment_active = data.data.assessment_active ? "1" : (data.data.assessment_active == '0'  ? '0' : 'x')
+
+                this.kegiatanDialog = true
+
+            },
+            async update(){
+                
+                const modelSent = {...this.modelKegiatan}
+                modelSent.matching_active = modelSent.matching_active == 'x' ? null : (modelSent.matching_active == '1' ? 1 : 0)
+                modelSent.assessment_active = modelSent.assessment_active == 'x' ? null : (modelSent.assessment_active == '1' ? 1 : 0)
+
+                try {
                     this.loadingButton = true
-                    console.log('selectedId', this.modelKegiatan)
-                   await DataService.updateKegiatan(this.modelKegiatan.id_kegiatan, this.modelKegiatan).then(response => {
-                    console.log('Update Kegiatan Response', response)
-                   
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                     await this.getAllKegiatan().then(response => {
-                    console.log('All Kegiatan Response', response)
-                     this.kegiatanDialog = false
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                                         this.$toast.add({
-                    severity: 'success',
-                    summary: 'Berhasil !',
-                    detail: 'Data berhasil diupdate',
-                    life: 3000
-                });
-                },
-                resetModelKegiatan(){
-                    this.selectedId = null
-                    this.selectedIndex = null
-                    this.modelKegiatan.id_kegiatan = null,
-                    this.modelKegiatan.name = null
-                    this.modelKegiatan.description = null
-                    this.modelKegiatan.matching_active = null
-                    this.modelKegiatan.assessment_active = null
-                },
-                async submit(){
-                    this.editField = false
-                    this.loadingButton = true
-                    console.log('Submit Kegiatan Baru', this.modelKegiatan)
-                    await DataService.postKegiatan(this.modelKegiatan).then(response => {
-                    console.log('Delete Response', response)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                    await this.getAllKegiatan().then(response => {
-                    console.log('All Kegiatan Response', response)
-                    })
-                    .catch(error => {
-                        console.log(error)
-                    })
-                    this.kegiatanDialog = false
+                    const result = await DataService.updateKegiatan(this.modelKegiatan.id_kegiatan, modelSent)
                     this.loadingButton = false
-                     this.$toast.add({
-                    severity: 'success',
-                    summary: 'Berhasil !',
-                    detail: 'Data berhasil ditambahkan',
-                    life: 3000
-                });
-                },
-                async deleteSelectedKeyOption(data){
-                    console.log('delete', data.data.id_kegiatan)
-                    this.selectedId = data.data.id_kegiatan
-                },
-                async deleteFinal(){
-                    const kegiatan={
-                        "kegiatan": this.selectedId
+
+                    if(result.data.meta.status == 'error') {
+                        this.$toast.add({
+                            severity: 'error',
+                            summary: 'Error !!',
+                            detail: result.data.data.error_message,
+                            life: 2000
+                        });                        
+                        return
                     }
-                    this.loadingButton = true;
-                    await DataService.deleteKegiatan(this.selectedId, kegiatan).then(response => {
                     
-                    console.log('Delete Response', response)
-                    
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-                    await this.getAllKegiatan().then(response => {
-                    
-                    console.log('All Kegiatan Response', response)
-                    this.loadingButton = false
-                    this.deleteDialog = false
-                     this.$toast.add({
-                    severity: 'success',
-                    summary: 'Berhasil !',
-                    detail: 'Data berhasil dihapus',
-                    life: 3000
-                });
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Sukses !!',
+                        detail: 'Berhasil update data kegiatan',
+                        life: 2000
+                    });
+                    this.kegiatanDialog = false
+                    this.resetModelKegiatan()
+                    this.getAllKegiatan()
 
+                } catch (error) {
+                    this.loadingButton = false
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: 'Something went wrong!',
+                        life: 2000
+                    });
+                    console.log(error)
+                }                          
+            },
+            resetModelKegiatan(){
+                this.selectedId = null
+                this.selectedIndex = null
+                this.modelKegiatan.id_kegiatan = null
+                this.modelKegiatan.name = null
+                this.modelKegiatan.description = null
+                this.modelKegiatan.matching_active = null
+                this.modelKegiatan.assessment_active = null
+                this.modelKegiatan.ma_start = null
+                this.modelKegiatan.ma_end = null
+                this.modelKegiatan.as_start = null
+                this.modelKegiatan.as_end = null
+            },            
+            async deleteSelectedKeyOption(data){
+                this.selectedId = data.data.id_kegiatan
+                this.selectedIndex = data.index
+            },
+            async deleteFinal() {
+
+                const kegiatan = {
+                    "kegiatan": this.selectedId
                 }
+
+                try {
+                    this.loadingButton = true;
+                    const result = await DataService.deleteKegiatan(this.selectedId, kegiatan)
+                    this.loadingButton = false;
+                    
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Berhasil !',
+                        detail: 'Data berhasil dihapus',
+                        life: 2000
+                    });
+                    this.deleteDialog = false
+                    this.getAllKegiatan()
+                } catch (error) {
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: 'Something went wrong!',
+                        life: 2000
+                    });
+                    this.loadingButton = false;
+                    console.log(error)
+                }                                     
+            },
+            addNewKegiatan() {
+                this.kegiatanDialog = true
+                this.editField = false
+                this.dialogHeader = 'Tambah Kegiatan'
+            },
+            async submit() {
+                try {
+                    this.loadingButton = true
+                    const result = await DataService.postKegiatan(this.modelKegiatan)
+                    this.loadingButton = false
+                    console.log(result)
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Berhasil !',
+                        detail: 'Data berhasil disimpan',
+                        life: 2000
+                    });
+                    this.kegiatanDialog = false
+                    this.resetModelKegiatan()                    
+                    this.getAllKegiatan()
+                } catch (error) {
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: 'Something went wrong!',
+                        life: 2000
+                    });
+                    this.loadingButton = true
+                    console.log(error)
+                }               
+            },
+            changeStatus(data) {
+                this.modelKegiatan.id_kegiatan = data.data.id_kegiatan
+                this.modelKegiatan.name = data.data.name
+                this.modelKegiatan.description = data.data.description
+                this.modelKegiatan.matching_active = data.data.matching_active ? "1" : (data.data.matching_active == '0'  ? '0' : 'x')
+                this.modelKegiatan.assessment_active = data.data.assessment_active ? "1" : (data.data.assessment_active == '0'  ? '0' : 'x')                
+                this.modelKegiatan.ma_start = data.data.ma_start ? new Date(data.data.ma_start).toLocaleDateString('en-CA') : null
+                this.modelKegiatan.ma_end = data.data.ma_end ? new Date(data.data.ma_end).toLocaleDateString('en-CA') : null
+                this.modelKegiatan.as_start = data.data.as_start ? new Date(data.data.as_start).toLocaleDateString('en-CA') : null
+                this.modelKegiatan.as_end = data.data.as_end ? new Date(data.data.as_end).toLocaleDateString('en-CA') : null
+                if(data.field == 'matching_active') {
+                    this.headerStatus = 'Matching'
+                    this.currentStatusText = data.data.matching_active ? "Active" : (data.data.matching_active == '0'  ? 'Done' : 'Inactive')                    
+                } else {
+                    this.headerStatus = 'Assessment'
+                    this.currentStatusText = data.data.assessment_active ? "Active" : (data.data.assessment_active == '0'  ? 'Done' : 'Inactive')
+                }                                
+                this.statusDialog = true
+            },
+            async saveChangeStatus() {
+                const modelSent = {...this.modelKegiatan}
+                modelSent.matching_active = modelSent.matching_active == 'x' ? null : (modelSent.matching_active == '1' ? 1 : 0)
+                modelSent.assessment_active = modelSent.assessment_active == 'x' ? null : (modelSent.assessment_active == '1' ? 1 : 0)
+                modelSent.ma_end = modelSent.ma_end ? modelSent.ma_end : null
+                modelSent.ma_start = modelSent.ma_start ? modelSent.ma_start : null
+                modelSent.as_start = modelSent.as_start ? modelSent.as_start : null
+                modelSent.as_end = modelSent.as_end ? modelSent.as_end : null
+                
+
+                try {
+                    this.loadingButton = true
+                    const result = await DataService.updateKegiatan(this.modelKegiatan.id_kegiatan, modelSent)
+                    this.loadingButton = false
+
+                    if(result.data.meta.status == 'error') {
+                        this.$toast.add({
+                            severity: 'error',
+                            summary: 'Error !!',
+                            detail: result.data.data.error_message,
+                            life: 2000
+                        });                        
+                        return
+                    }
+                    
+                    this.$toast.add({
+                        severity: 'success',
+                        summary: 'Sukses !!',
+                        detail: 'Berhasil update data kegiatan',
+                        life: 2000
+                    });
+                    this.statusDialog = false
+                    this.resetModelKegiatan()
+                    this.getAllKegiatan()
+
+                } catch (error) {
+                    this.loadingButton = false
+                    this.$toast.add({
+                        severity: 'error',
+                        summary: 'Error !!',
+                        detail: 'Something went wrong!',
+                        life: 2000
+                    });
+                    console.log(error)
+                }  
+
             }
+        }
     }
 </script>
 
-<style lang="css">
+<style scoped>       
 
-    td {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    ::v-deep(tr td) {
+        padding: 30px !important;        
     }
 
-    .p-datatable .p-datatable-header {
-        background: none;
-        color: none;
-        border: none;
+    ::v-deep(thead th) {
+        background-color: #f3f2f7 !important;
+        vertical-align: top;
+        text-transform: uppercase;
+        font-size: .857rem;
+        letter-spacing: .5px;
+        text-align: center !important;
+        height: 80px;
     }
 
-    .p-datatable-thead {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    ::v-deep(div.p-column-header-content) {
+        width: 100%;
     }
 
-    .p-paginator {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    ::v-deep(span.p-column-title) {
+        margin: 0 auto;
     }
 
-    .p-dropdown-label {
-        background-color: v-bind(headerBg);
-        color: v-bind(textColor);
+    .p-button-status-matching-assessment {
+        margin: 0 auto;
+        /* cursor: default; */
     }
 
-    .buttonCompareActive {
-        background-color: #9155fd;
-        color: white;
+    .p-button-status-matching-assessment:focus {
+        box-shadow: none;
     }
 
-    .buttonDataSourceActive {
-        background-color: #9155fd;
-        color: white;
+    .ccm-custom {
+        margin-left: 15px !important;
+        width: calc(100% - 30px);
     }
 
-    :host>>>.p-tabmenu .p-tabmenu-nav .p-tabmenuitem.p-state-active {
-        background-color: #d90096;
-        border: 1px solid #d600d9;
+    .header-status-kegiatan {
+        background: #61e4be;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+        color: darkgreen;
+        font-weight: 700;
+        text-transform: uppercase;
     }
 
-    :host>>>.p-tabview .p-tabview-panels {
-        background-color: red;
+    .heading-status-kegiatan-name {
+        overflow: hidden;
+        text-align: center;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+        font-weight: bolder;
     }
 
-    .p-datatable-wrapper {
-        /* border-radius: 18px; */
+    .heading-status-kegiatan-name:before, .heading-status-kegiatan-name:after {
+        background-color: #000;
+        content: "";
+        display: inline-block;
+        height: 4px;
+        position: relative;
+        vertical-align: middle;
+        width: 50%;
     }
 
-    .p-progressbar .p-progressbar-label {
-        color: white;
-        line-height: 1.5rem;
+    .heading-status-kegiatan-name:before {
+        right: 0.5em;
+        margin-left: -50%;
     }
 
-    /* .p-tabmenu{
-  background-color: aqua;
-}
+    .heading-status-kegiatan-name:after {
+        left: 0.5em;
+        margin-right: -50%;
+    }    
 
-.p-tabmenuitem{
-  background-color: red;
-
-}
-.p-highlight{
-  background-color: red !important;background: red;
-}
-.p-tabmenu-nav{
-  background-color: red !important;background: red !important;
-}
-.p-menuitem-text{
-  background-color: red !important;background: red;
-} */
-    /* .ul{
-  background-color: red;
-} */
 </style>

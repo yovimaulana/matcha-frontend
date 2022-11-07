@@ -1,119 +1,85 @@
 <template>
     <div class="p-d-flex p-grid p-jc-between ">
-        <div :class="myBgColorData+' '+myTextColorData" style="border-color: transparent;">
+        <div class="container-nav-matcha" :class="['/dashboard', '/dashboard/admin'].includes(this.$route.fullPath)  ? 'active' : ''">
             <router-link v-if="currentUser.roles.find(role => role.name == 'ROLE_ADMIN') != undefined"
-                :to="{name: 'dashboardAdmin'}" @click="this.$emit('showSideBar')">
-                <div :class="myTextColorData+ ' hvr-fade'"
-                    style="padding: 10px;font-size: 20px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
-
-                    <div>
-                        <i class="pi pi-th-large p-mr-2 p-ml-2"></i>
-                        Dashboard
-                    </div>
+                :to="{name: 'dashboardAdmin'}" @click="this.$emit('showSideBar');">
+                <div>
+                    <i class="pi pi-th-large p-mr-2 p-ml-2"></i>
+                    Dashboard
                 </div>
             </router-link>
             <router-link v-else :to="{name: 'dashboardUser'}" @click="this.$emit('showSideBar')">
-                <div :class="myTextColorData+ ' hvr-fade'"
-                    style="padding: 10px;font-size: 20px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
-
-                    <div>
-                        <i class="pi pi-th-large p-mr-2 p-ml-2"></i>
-                        Dashboard
-                    </div>
+                <div>
+                    <i class="pi pi-th-large p-mr-2 p-ml-2"></i>
+                    Dashboard
                 </div>
             </router-link>
-            <br>
+        </div>
 
+
+        <div class="container-nav-matcha" :class="this.$route.fullPath == '/matching' ? 'active' : ''">
             <router-link :to="{name: 'matching'}" @click="this.$emit('showSideBar')">
-                <div :class="myTextColorData+ ' hvr-fade'"
-                    style="padding: 10px;font-size: 20px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
+                <div>
+                    <i class="pi pi-table p-mr-2 p-ml-2"></i>
+                    Matching
+                </div>
+            </router-link>
+        </div>
 
+        <div class="container-nav-matcha" :class="this.$route.fullPath == '/assessment' ? 'active' : ''">
+            <router-link :to="{name: 'assessment'}" @click="this.$emit('showSideBar');">
+                <div>
+                    <i class="pi pi-check-circle p-mr-2 p-ml-2"></i>
+                    Assessment
+                </div>
+            </router-link>
+        </div>
+
+        <div v-if="currentUser.roles.find(role => role.name == 'ROLE_ADMIN') != undefined" style="cursor: pointer;margin-left: 6px;line-height: 1.45;font-size: 1.1rem;color: #625f6e;"
+            @click="this.showSubMenuAlokasi = !this.showSubMenuAlokasi" class="container-nav-matcha" >
+            <div>
+                <i class="p-mr-2 p-ml-2'" :class="cursorSubMenuAlokasi"></i>
+                Alokasi
+            </div>
+        </div>
+
+        <div v-show="showSubMenuAlokasi" class="animate__animated animate__fadeIn animate__faster" style="width: 100%;">
+            <div class="container-nav-matcha" :class="this.$route.fullPath == '/alokasi/matching' ? 'active' : ''">
+                <router-link :to="{name: 'alokasiMatching'}" @click="this.$emit('showSideBar')">
                     <div>
-                        <i class="pi pi-table p-mr-2 p-ml-2"></i>
+                        <i class="pi pi-circle p-mr-2 p-ml-2"></i>
                         Matching
                     </div>
-                </div>
-            </router-link><br>
-
-
-
-            <router-link :to="{name: 'assessment'}" @click="this.$emit('showSideBar')">
-                <div :class="myTextColorData+ ' hvr-fade'"
-                    style="padding: 10px;font-size: 20px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
-
+                </router-link>
+            </div>
+            <div class="container-nav-matcha" :class="this.$route.fullPath == '/alokasi/assessment' ? 'active' : ''">
+                <router-link :to="{name: 'alokasiAssessment'}" @click="this.$emit('showSideBar')">
                     <div>
-                        <i class="pi pi-check-circle p-mr-2 p-ml-2"></i>
+                        <i class="pi pi-circle p-mr-2 p-ml-2"></i>
                         Assessment
                     </div>
-                </div>
-            </router-link><br>
-
-
-
-
-            <div v-if="currentUser.roles.find(role => role.name == 'ROLE_ADMIN') != undefined"
-                @click="subMenuAlokasiTrigerred()" :class="myTextColorData+ ' hvr-fade'+' '+selectedMenu"
-                style="padding: 10px;font-size: 20px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
-
-                <div>
-                    <i :class="MenuIcon+' p-mr-2 p-ml-2'"></i>
-                    Alokasi
-                </div>
-            </div>
-
-
-
-
-            <div v-show="subMenuAlokasi" class="animate__animated animate__fadeIn animate__faster">
-
-                <router-link :to="{name: 'alokasiMatching'}" @click="this.$emit('showSideBar')">
-                    <div :class="myTextColorData+ ' hvr-fade'"
-                        style="padding: 10px;font-size: 16px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
-
-                        <div>
-                            <i class="pi pi-circle p-mr-2 p-ml-2"></i>
-                            Matching
-                        </div>
-                    </div>
-                </router-link><br>
-                <router-link :to="{name: 'alokasiAssessment'}" @click="this.$emit('showSideBar')">
-                    <div :class="myTextColorData+ ' hvr-fade'"
-                        style="padding: 10px;font-size: 16px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
-
-                        <div>
-                            <i class="pi pi-circle p-mr-2 p-ml-2"></i>
-                            Assessment
-                        </div>
-                    </div>
                 </router-link>
-
             </div>
-            <br>
-            <router-link v-if="currentUser.roles.find(role => role.name == 'ROLE_ADMIN') != undefined"
-                :to="{name: 'kegiatan'}" @click="this.$emit('showSideBar')">
-                <div :class="myTextColorData+ ' hvr-fade'"
-                    style="padding: 10px;font-size: 20px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
+        </div>
 
-                    <div>
-                        <i class="pi pi-box p-mr-2 p-ml-2"></i>
-                        Kegiatan
-                    </div>
+        <div class="container-nav-matcha" :class="this.$route.fullPath == '/kegiatan' ? 'active' : ''">
+            <router-link v-if="currentUser.roles.find(role => role.name == 'ROLE_ADMIN') != undefined"
+            :to="{name: 'kegiatan'}" @click="this.$emit('showSideBar')">
+                <div>
+                    <i class="pi pi-box p-mr-2 p-ml-2"></i>
+                    Kegiatan
                 </div>
             </router-link>
-            <br>
+        </div>
+        
+        <div class="container-nav-matcha" :class="this.$route.fullPath == '/manajemen-user' ? 'active' : ''">
             <router-link v-if="currentUser.roles.find(role => role.name == 'ROLE_ADMIN') != undefined"
-                :to="{name: 'manajemenUser'}" @click="this.$emit('showSideBar')">
-                <div :class="myTextColorData+ ' hvr-fade'"
-                    style="padding: 10px;font-size: 20px;font-weight: 600; border-radius: 30px; text-decoration: none;width: 150%;margin-left: 10px;">
-
-                    <div>
-                        <i class="pi pi-user p-mr-2 p-ml-2"></i>
-                        Users
-                    </div>
+            :to="{name: 'manajemenUser'}" @click="this.$emit('showSideBar')">
+                <div>
+                    <i class="pi pi-user p-mr-2 p-ml-2"></i>
+                    Users
                 </div>
             </router-link>
-            <br>
-            <br>
         </div>
     </div>
 </template>
@@ -123,14 +89,20 @@
     export default {
         components: {
 
-
-
         },
         directives: {
             'tooltip': Tooltip
         },
+        watch: {
+            showSubMenuAlokasi(value) {                
+                console.log(value)
+                this.cursorSubMenuAlokasi = value ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+            }
+        },
         data() {
             return {
+                showSubMenuAlokasi: ['/alokasi/matching', '/alokasi/assessment'].includes(this.$route.fullPath),
+                cursorSubMenuAlokasi: ['/alokasi/matching', '/alokasi/assessment'].includes(this.$route.fullPath) ? 'pi pi-chevron-down' : 'pi pi-chevron-right',
                 matchaMessage: [
                     'I love you so matcha',
                     'Ah, so matcha better',
@@ -150,68 +122,6 @@
                 visibleLeft: false,
                 sidebarClass: "p-col-0 p-md-0 p-lg-0",
                 contentClass: "p-col-12 p-md-12 p-lg-12",
-
-                items: [{
-                        label: 'Dashboard',
-                        icon: 'pi pi-refresh',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'success',
-                                summary: 'Updated',
-                                detail: 'Data Updated',
-                                life: 3000
-                            });
-                        }
-                    },
-                    {
-                        label: 'Setting',
-                        icon: 'pi pi-times',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'warn',
-                                summary: 'Delete',
-                                detail: 'Data Deleted',
-                                life: 3000
-                            });
-                        }
-                    },
-                    {
-                        label: 'Setting',
-                        icon: 'pi pi-times',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'warn',
-                                summary: 'Delete',
-                                detail: 'Data Deleted',
-                                life: 3000
-                            });
-                        }
-                    },
-                    {
-                        label: 'Setting',
-                        icon: 'pi pi-times',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'warn',
-                                summary: 'Delete',
-                                detail: 'Data Deleted',
-                                life: 3000
-                            });
-                        }
-                    },
-                    // {
-                    //     label: 'Vue Website',
-                    //     icon: 'pi pi-external-link',
-                    //     url: 'https://vuejs.org/'
-                    // },
-                    // {
-                    //     label: 'Router',
-                    //     icon: 'pi pi-upload',
-                    //     to: '/fileupload'
-                    // }
-                ]
-
-
             }
         },
         created() {
@@ -256,18 +166,18 @@
                     this.selectedMenuHistory = ''
                 }
             },
-            sideBar() {
-                if (this.sidebarClass == "p-col-0 p-md-0 p-lg-0") {
-                    // this.sidebarClass = "p-col-2 p-md-2 p-lg-2"
-                    // this.contentClass = "p-col-10 p-md-10 p-lg-10"
-                    this.showsidebar = true
-                    this.visibleLeft = true
-                } else {
-                    // this.sidebarClass = "p-col-0 p-md-0 p-lg-0"
-                    // this.contentClass = "p-col-12 p-md-12 p-lg-12"
-                    // this.showsidebar = false
-                }
-            },
+            // sideBar() {
+            //     if (this.sidebarClass == "p-col-0 p-md-0 p-lg-0") {
+            //         // this.sidebarClass = "p-col-2 p-md-2 p-lg-2"
+            //         // this.contentClass = "p-col-10 p-md-10 p-lg-10"
+            //         this.showsidebar = true
+            //         this.visibleLeft = true
+            //     } else {
+            //         // this.sidebarClass = "p-col-0 p-md-0 p-lg-0"
+            //         // this.contentClass = "p-col-12 p-md-12 p-lg-12"
+            //         // this.showsidebar = false
+            //     }
+            // },
             darklight() {
                 if (this.myBgColorData == 'mydarkbgcolor') {
                     // this.myBgColorData = 'mylightbgcolor'
@@ -289,8 +199,41 @@
     }
 </script>
 
-<style>
-    .router-link-active .router-link-exact-active {
+<style scoped>
+    .container-nav-matcha {
+        width: 100% !important;
+        padding-left: 15px;
+        margin-top: 15px;
+    }
+
+    .container-nav-matcha a {
+        text-decoration: none;
+        color: #625f6e;
+        line-height: 1.45;
+        font-size: 1.1rem;
+        font-weight: 400;
+    }
+
+    .container-nav-matcha a:hover>* {
+        transform: translateX(5px);
+        transition: transform .25s ease, -webkit-transform .25s ease;
+    }
+
+    .container-nav-matcha.active>a {
+        color: white;
+    }
+
+    .container-nav-matcha.active {
+        box-shadow: 0 0 10px 1px rgb(115 103 240 / 70%);
+        border-radius: 4px;
+        background: linear-gradient(118deg, #7367f0, rgba(115, 103, 240, .7));
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+    }
+
+
+    /* .router-link-active .router-link-exact-active {
         color: red !important;
         background-color: red !important;
     }
@@ -348,11 +291,11 @@
 
     .myhover:hover {
         background-color: #9155fd;
-    }
+    } */
 
 
     /* Pulse Grow */
-    @-webkit-keyframes hvr-pulse-grow {
+    /* @-webkit-keyframes hvr-pulse-grow {
         to {
             -webkit-transform: scale(1.8);
             transform: scale(1.8);
@@ -387,10 +330,10 @@
         animation-iteration-count: infinite;
         -webkit-animation-direction: alternate;
         animation-direction: alternate;
-    }
+    } */
 
     /* Bob */
-    @-webkit-keyframes hvr-bob {
+    /* @-webkit-keyframes hvr-bob {
         0% {
             -webkit-transform: translateY(-8px);
             transform: translateY(-8px);
@@ -463,5 +406,5 @@
         animation-fill-mode: forwards;
         -webkit-animation-direction: normal, alternate;
         animation-direction: normal, alternate;
-    }
+    } */
 </style>

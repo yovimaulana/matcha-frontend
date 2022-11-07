@@ -1,19 +1,16 @@
 <template>
     <div class="p-grid p-jc-center p-ai-center vertical-container myBg"
-        style="min-height: 100vh; min-width: 100vh; color: #726b7c;">
-      
-
+        style="min-height: 100vh; min-width: 100vh; color: #726b7c;">    
         <Card style="width: 25rem; margin-bottom: 2em; color: #726b7c;border-radius:14px;" class="p-shadow-6">
             <template #title>
-
-                <img src="../assets/matcha.png" class="hvr-bob mybob p-mt-1 "
-                    v-tooltip.top="{value: this.matchaMessage[Math.floor(Math.random()*this.matchaMessage.length)], class: 'custom-error'}"
-                    style="width: 50%; height: 18%;" alt="" srcset="">
-                <div style="font-weight: 700;color:#78b34d">
-
-
-                    MatchA App</div>
-                <span style="font-weight: normal;font-size: 18px;">Aplikasi Matching dan Assessment</span> <br>
+                <div style="text-align: center">
+                    <img src="../assets/matcha.png" class="hvr-bob mybob p-mt-1 "
+                        v-tooltip.top="{value: this.matchaMessage[Math.floor(Math.random()*this.matchaMessage.length)], class: 'custom-error'}"
+                        style="width: 50%; height: 18%;" alt="" srcset="">
+                    <div style="font-weight: 700;color:#78b34d">
+                        MatchA App</div>
+                    <span style="font-weight: normal;font-size: 18px;">Aplikasi Matching dan Assessment</span>
+                </div>
 
             </template>
             <template #content>

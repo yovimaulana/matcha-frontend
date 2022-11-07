@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Login from '../views/LoginPage.vue'
+import Login from '../views/LoginPage_v2.vue'
 import store from '../store/index.js'
 const routes = [
   {
@@ -21,17 +21,13 @@ const routes = [
     children: [{
       path: '',
       name: 'assessment',
-      component: () => import(/* webpackChunkName: "Assessment"*/'../views/Assessment_v2.vue')
+      component: () => import('../views/Assessment_v2.vue')
     }],
     meta: {
       title: "Assessment",      
       requiresAuth: true,
       restriction: '',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () => import(/* webpackChunkName: "about" */ '../views/MyLayout.vue')
   },
   {
     path: '/matching',
@@ -46,10 +42,6 @@ const routes = [
       requiresAuth: true,
       restriction: '',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/dashboard/admin', 
@@ -64,10 +56,6 @@ const routes = [
       requiresAuth: true,
       restriction: 'admin',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/dashboard',
@@ -83,11 +71,6 @@ const routes = [
       requiresAuth: true,
       restriction: 'user',
     }
-   
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/kegiatan',    
@@ -102,13 +85,9 @@ const routes = [
       requiresAuth: true,
       restriction: 'admin',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
-    path: '/manajemen_user',    
+    path: '/manajemen-user',    
     component: () => import('../views/MyLayout2.vue'),
     children: [{
       path: '',
@@ -120,10 +99,6 @@ const routes = [
       requiresAuth: true,
       restriction: 'admin',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/history',
@@ -133,10 +108,6 @@ const routes = [
       path: '',
       component: () => import('../views/History.vue')
     }],
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/alokasi/matching',
@@ -152,10 +123,6 @@ const routes = [
       requiresAuth: true,
       restriction: 'admin',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/alokasi/assessment',
@@ -171,10 +138,6 @@ const routes = [
       requiresAuth: true,
       restriction: 'admin',
     }
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/about',
@@ -184,10 +147,6 @@ const routes = [
       path: '',
       component: () => import('../views/About.vue')
     }],
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    
   },
   {
     path: '/:pathMatch(.*)*',

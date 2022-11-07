@@ -1,98 +1,105 @@
 <template>
-    <div :class="myBgColorData+' myBgLayout '+myTextColorData">
-        <div :class="myBgColorData+ ' '+'p-grid p-ai-stretch nested-grid p-nogutter'" style="margin:0;">
-            <Sidebar v-model:visible="visibleLeft" :class="myBgColorData+' '+myTextColorData" style="margin:0">
-                <div class="animate__animated animate__slideInLeft animate__faster" style="margin:0">
-                    <div class="p-grid p-jc-center p-d-flex p-flex-column p-ac-center ">
-                        <img src="../assets/matcha.png" class="hvr-bob p-mt-4"
-                            v-tooltip.right="{value: this.matchaMessage[Math.floor(Math.random()*this.matchaMessage.length)], class: 'custom-error'}"
-                            style="width: 20%; height: 18%;" alt="" srcset="">
+    <div class="p-grid p-ai-stretch nested-grid p-nogutter" style="min-height: 100vh;">
+        <Sidebar v-model:visible="visibleLeft" :class="myBgColorData+' '+myTextColorData" style="width: 260px;">
+            <div class="animate__animated animate__slideInLeft animate__faster">
+                <div class="p-grid p-jc-center p-d-flex p-flex-column p-ac-center ">
+                    <img src="../assets/matcha.png" class="hvr-bob p-mt-4"
+                        v-tooltip.right="{value: this.matchaMessage[Math.floor(Math.random()*this.matchaMessage.length)], class: 'custom-error'}"
+                        style="width: 20%; height: 18%;" alt="" srcset="">
 
-                    </div>
-                    <div class="p-grid p-jc-center  p-ac-center " style="margin-top: -7%;">
-                        <h2 class="" style="color: #78b34d; font-weight: 700;">MatchA</h2>
-                    </div>
-                    <NavigationMenu @showSideBar="sideBar()"/>  
                 </div>
-            </Sidebar>
+                <div class="p-grid p-jc-center  p-ac-center " style="margin-top: -7%;">
+                    <h2 class="" style="color: #78b34d; font-weight: 700;">MatchA</h2>
+                </div>
+                <NavigationMenu @showSideBar="sideBar" />
+            </div>
+        </Sidebar>
 
-
-            <div :class="contentClass + ' '+ myBgColorData">
-
-                <div class="p-col-12">
-                    <br>
-                    <div>
-
-                        <div class="p-d-flex p-ai-stretch p-jc-between">
-                            <Button icon="pi pi-bars" @click="sideBar()"
-                                class="p-button-text p-button-lg  p-button-secondary p-button-rounded p-ml-4" />
-                            <div>
-
-                                <Button :icon="darklightIcon"
-                                    class="p-button-text p-button-rounded  p-button-secondary p-button-lg p-mr-2"
-                                    @click="darklight() " />
-                                <Button icon="pi pi-user" @click="toggle"
-                                    class="p-button-text p-button-rounded p-button-secondary p-mr-6 p-button-lg" />
-
-                                <OverlayPanel ref="op" :class="myBgColorData+' '+myTextColorData">
-
-                                    <div :class="myTextColorData+ '  '"
-                                        style="cursor: pointer;font-size: small;font-weight: 600; border-radius: 30px; text-decoration: none;width: 100%;">
-
-                                        <div>
-                                            <i class="pi pi-user p-mr-2 "></i>
-                                            {{!currentUser ? '' : currentUser.name}} <br>
-                                            <hr>
-
-                                            <div @click="logout">
-                                                <i class="pi pi-sign-out p-mr-2 "></i>
-                                                Logout
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </OverlayPanel>
-                            </div>
+        <div :class="contentClass + ' '+ myBgColorData" style="position:relative">
+            <nav class="navbar header-navbar navbar-shadow align-items-center narbar-light navbar-expand"
+                style="padding: 0">
+                <div class="p-d-flex container-navbar">
+                    <Button icon="pi pi-bars" @click="sideBar"
+                        class="p-button-text  p-button-secondary p-button onclick-btn-custom" />
+                    <div style="margin-left: auto; display: flex; align-items: center;">
+                        <Button :icon="darklightIcon"
+                            class="p-button-text p-button-rounded  p-button-secondary p-button p-mr-2 onclick-btn-custom"
+                            @click="darklight() " />
+                        <div class="user-nav">
+                            <p style="margin-top: 0; margin-bottom: 0; font-weight: 600 !important; color: #6e6b7b;">
+                                {{!currentUser ? '' : currentUser.name }}
+                            </p>
+                            <span
+                                style="font-size: smaller; color: #6e6b7b; float: right; ">{{!currentUser ? '' : (currentUser['roles'].find((data) => data.name == 'ROLE_ADMIN') ? 'Admin' : 'User') }}</span>
                         </div>
-                        <br>
+                        <span class="container-user-icon">
+                            <Button id="btn-navbar-user" icon="pi pi-user" @click="toggle" aria-haspopup="true"
+                                aria-controls="overlay_tmenu"
+                                class="p-button-rounded p-button-secondary p-button-lg onclick-btn-custom"
+                                style="margin-left: 5px" />
+                            <Badge style="bottom:0; right: 0; height: 0.5rem !important" class="p-badge-dot p-badge-success badge-container-st"
+                                severity="success" size="small">
+                            </Badge>
+                            <TieredMenu id="overlay_tmenu" ref="menu" :popup="true" :model="itemsNav"
+                                style="margin-top: 25px;">
+                                <template #item="{item}">
+                                    <div v-if="item.label == 'Logout'" @click="logout"
+                                        style="cursor: pointer; padding: 10px"><i class="pi pi-fw pi-power-off"></i>
+                                        <span style="margin-left: 10px;">{{ item.label }}</span></div>
+                                    <router-link v-else :to="{name: item.url}"
+                                        style="text-decoration: none; color: inherit;">
+                                        <div style="cursor: pointer; padding: 10px;"><i class="pi pi-fw pi-user"
+                                                style="margin-right: 10px;"></i> {{item.label}} </div>
+                                    </router-link>
+                                </template>
+                            </TieredMenu>
+                        </span>
                     </div>
-
                 </div>
+            </nav>
 
-                <div class="p-col-10  p-offset-1" style=" min-height: calc(100vh - (90px + 66px));">
-                    <div class="">
-                        <router-view v-slot="{ Component }"  >
-                            <transition name="slide" mode="out-in">
-                                <component :is="Component" :key="$route.path"></component>
-                            </transition>
-                        </router-view>                        
-                    </div>
+            <div class="p-col-12" style="padding-left: 15px; padding-right: 15px; padding-bottom: 15px">
+                <div class="">
+                    <router-view v-slot="{ Component }">
+                        <transition name="slide" mode="out-in">
+                            <component :is="Component" :key="$route.path"></component>
+                        </transition>
+                    </router-view>
                 </div>
             </div>
 
-        </div>
-        <div :class="myBgColorData+' '+myTextColorData+' p-col-12'" style="bottom: 0;   width: 100%; ">
-            <div class="p-d-flex p-ai-stretch p-jc-between ">
-                <p class="p-ml-6">COPYRIGHT © 2022 <span style="color: #00aeef;font-weight: 700;">B</span><span
-                        style="color: #8cc63f;font-weight: 700;">P</span><span
-                        style="color: #f7941e;font-weight: 700;">S</span>, All rights Reserved | Thank you so <span
-                        style="color: #78b34d; font-weight: 700;">MatchA</span> for what you do</p>
-                <p class="p-mr-6"><span style="font-weight: 700;">&lt; /&gt; &nbsp;</span> dengan <i
-                        class="p-ml-2 pi pi-heart-fill animate__animated animate__flash animate__slow animate__infinite	infinite hvr-pulse-grow "
-                        style="color: #D32F2F"></i></p>
+            <!-- Footer -->
+            <div class="p-col-12" style="bottom: 0; width: 100%; position: absolute; height: 15px;">
+                <div class="p-d-flex p-ai-stretch p-jc-between">
+                    <p class="p-ml-6">COPYRIGHT © 2022 <span style="color: #00aeef;font-weight: 700;">B</span><span
+                            style="color: #8cc63f;font-weight: 700;">P</span><span
+                            style="color: #f7941e;font-weight: 700;">S</span>, All rights Reserved | Thank you so <span
+                            style="color: #78b34d; font-weight: 700;">MatchA</span> for what you do</p>
+                    <p class="p-mr-6"><span style="font-weight: 700;">&lt; /&gt; &nbsp;</span> dengan <i
+                            class="p-ml-2 pi pi-heart-fill animate__animated animate__flash animate__slow animate__infinite	infinite hvr-pulse-grow "
+                            style="color: #D32F2F"></i></p>
+                </div>
             </div>
         </div>
+
     </div>
+
 </template>
 
 <script>
     import OverlayPanel from 'primevue/overlaypanel';
     import Tooltip from 'primevue/tooltip';
     import NavigationMenu from '../components/NavigationMenu.vue'
+    import Card from 'primevue/card'
+    import Badge from 'primevue/badge'
+    import TieredMenu from 'primevue/tieredmenu';
     export default {
         components: {
             OverlayPanel,
-            NavigationMenu
+            NavigationMenu,
+            Card,
+            Badge,
+            TieredMenu
         },
         directives: {
             'tooltip': Tooltip
@@ -104,7 +111,6 @@
                     'Ah, so matcha better',
                     'The key to life is positivi-tea.',
                     'All of our codes and apps are quali-tea',
-
                 ],
                 selectedMenu: '',
                 selectedMenuHistory: '',
@@ -116,60 +122,21 @@
 
                 showsidebar: false,
                 visibleLeft: false,
-                sidebarClass: "p-col-0 p-md-0 p-lg-0",
+                // sidebarClass: "p-col-0 p-md-0 p-lg-0",
                 contentClass: "p-col-12 p-md-12 p-lg-12",
-
-                items: [{
-                        label: 'Dashboard',
-                        icon: 'pi pi-refresh',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'success',
-                                summary: 'Updated',
-                                detail: 'Data Updated',
-                                life: 3000
-                            });
-                        }
+                itemsNav: [{
+                        label: 'Profile User',
+                        icon: 'pi pi-fw pi-user',
+                        url: 'dashboardUser'
                     },
                     {
-                        label: 'Setting',
-                        icon: 'pi pi-times',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'warn',
-                                summary: 'Delete',
-                                detail: 'Data Deleted',
-                                life: 3000
-                            });
-                        }
+                        separator: true
                     },
                     {
-                        label: 'Setting',
-                        icon: 'pi pi-times',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'warn',
-                                summary: 'Delete',
-                                detail: 'Data Deleted',
-                                life: 3000
-                            });
-                        }
-                    },
-                    {
-                        label: 'Setting',
-                        icon: 'pi pi-times',
-                        command: () => {
-                            this.$toast.add({
-                                severity: 'warn',
-                                summary: 'Delete',
-                                detail: 'Data Deleted',
-                                life: 3000
-                            });
-                        }
-                    },
-                ]
-
-
+                        label: 'Logout',
+                        icon: 'pi pi-fw pi-power-off',
+                    }
+                ],
             }
         },
         created() {
@@ -232,198 +199,125 @@
                 }
             },
             toggle(event) {
-                this.$refs.op.toggle(event);
+                // this.$refs.op.toggle(event);
+                this.$refs.menu.toggle(event);
             }
         }
     }
 </script>
 
-<style>
-td div {
-    /* div will now take up full 200px of parent's height */
-    height: 100%;
-    width: 100%;
-}
-  
-    .mydarkbgcolor {
-        background-color: #28243d;
-    }
-
-    .mylightbgcolor {
-        background-color: #f4f5fa;
-        
-    }
-
-    .mydarkcardcolor {
-        background-color: #312d4b;
-    }
-
-    .mylightcardcolor {
-        background-color: #ffffff
-    }
-
-    .mydarktext-color {
-        color: #cfcbe4;
-    }
-
-    .mylighttext-color {
-        color: #726b7c;
-    }
-
-    .selectedMenu {
-        background-color: #9155fd;
-        color: white;
-
-    }
-
-
-    .hvr-fade {
+<style scoped>
+    .user-nav {
         display: inline-block;
+        font-size: smaller;
+        margin-right: 5px;
+    }
+
+    @media (max-width: 400px) {
+        .user-nav {
+            display: none
+        }
+    }
+
+
+    button.onclick-btn-custom {
+        box-shadow: none !important;
+    }
+
+    .container-user-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         vertical-align: middle;
-        -webkit-transform: perspective(1px) translateZ(0);
-        transform: perspective(1px) translateZ(0);
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-        overflow: hidden;
-        -webkit-transition-duration: 0.3s;
-        transition-duration: 0.3s;
-        -webkit-transition-property: color, background-color;
-        transition-property: color, background-color;
+        flex-shrink: 0;
+        line-height: 1;
+        max-width: 100%;
+        overflow: visible;
+        position: relative;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
     }
 
-    .hvr-fade:hover,
-    .hvr-fade:focus,
-    .hvr-fade:active {
-        background-color: #9155fd;
-        color: white;
+    .badge-container-st {
+        bottom: 0px;
+        right: 0px;
+        min-height: 11px;
+        min-width: 11px;
+        z-index: 1;
+        position: absolute;
+        line-height: 1;
     }
 
-    .myhover:hover {
-        background-color: #9155fd;
+    .header-navbar.navbar-shadow {
+        box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
     }
 
 
-    /* Pulse Grow */
-    @-webkit-keyframes hvr-pulse-grow {
-        to {
-            -webkit-transform: scale(1.8);
-            transform: scale(1.8);
-        }
+    .header-navbar {
+        margin: 1.3rem 2rem 0;
+        border-radius: 0.428rem;
     }
 
-    @keyframes hvr-pulse-grow {
-        to {
-            -webkit-transform: scale(1.8);
-            transform: scale(1.8);
-        }
+    .navbar-light {
+        background: #ffffff !important;
     }
 
-    .hvr-pulse-grow {
-        display: inline-block;
-        vertical-align: middle;
-        -webkit-transform: perspective(1px) translateZ(0);
-        transform: perspective(1px) translateZ(0);
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    .header-navbar {
+        padding: 0;
     }
 
-    .hvr-pulse-grow:hover,
-    .hvr-pulse-grow:focus,
-    .hvr-pulse-grow:active {
-        -webkit-animation-name: hvr-pulse-grow;
-        animation-name: hvr-pulse-grow;
-        -webkit-animation-duration: 0.3s;
-        animation-duration: 0.3s;
-        -webkit-animation-timing-function: linear;
-        animation-timing-function: linear;
-        -webkit-animation-iteration-count: infinite;
-        animation-iteration-count: infinite;
-        -webkit-animation-direction: alternate;
-        animation-direction: alternate;
+    .navbar {
+        padding: 0.5rem 1rem;
     }
 
-    /* Bob */
-    @-webkit-keyframes hvr-bob {
-        0% {
-            -webkit-transform: translateY(-8px);
-            transform: translateY(-8px);
-        }
-
-        50% {
-            -webkit-transform: translateY(-4px);
-            transform: translateY(-4px);
-        }
-
-        100% {
-            -webkit-transform: translateY(-8px);
-            transform: translateY(-8px);
-        }
+    .header-navbar {
+        min-height: 4.45rem;
+        font-family: Montserrat, Helvetica, Arial, serif;
+        -webkit-transition: all .3s ease, background 0s;
+        transition: all .3s ease, background 0s;
+        z-index: 997;
     }
 
-    @keyframes hvr-bob {
-        0% {
-            -webkit-transform: translateY(-8px);
-            transform: translateY(-8px);
-        }
-
-        50% {
-            -webkit-transform: translateY(-4px);
-            transform: translateY(-4px);
-        }
-
-        100% {
-            -webkit-transform: translateY(-8px);
-            transform: translateY(-8px);
-        }
+    .align-items-center {
+        -webkit-box-align: center !important;
+        -ms-flex-align: center !important;
+        align-items: center !important;
     }
 
-    @-webkit-keyframes hvr-bob-float {
-        100% {
-            -webkit-transform: translateY(-8px);
-            transform: translateY(-8px);
-        }
+    .navbar-expand {
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-flow: row nowrap;
+        flex-flow: row nowrap;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
     }
 
-    @keyframes hvr-bob-float {
-        100% {
-            -webkit-transform: translateY(-8px);
-            transform: translateY(-8px);
-        }
+    .navbar {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
     }
 
-    .hvr-bob {
-        display: inline-block;
-        vertical-align: middle;
-        -webkit-transform: perspective(1px) translateZ(0);
-        transform: perspective(1px) translateZ(0);
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    nav {
+        display: block;
     }
 
-    .hvr-bob,
-    .hvr-bob,
-    .hvr-bob {
-        -webkit-animation-name: hvr-bob-float, hvr-bob;
-        animation-name: hvr-bob-float, hvr-bob;
-        -webkit-animation-duration: .3s, 1.5s;
-        animation-duration: .3s, 1.5s;
-        -webkit-animation-delay: 0s, .3s;
-        animation-delay: 0s, .3s;
-        -webkit-animation-timing-function: ease-out, ease-in-out;
-        animation-timing-function: ease-out, ease-in-out;
-        -webkit-animation-iteration-count: 1, infinite;
-        animation-iteration-count: 1, infinite;
-        -webkit-animation-fill-mode: forwards;
-        animation-fill-mode: forwards;
-        -webkit-animation-direction: normal, alternate;
-        animation-direction: normal, alternate;
-    }
-
-    /* transition */
-    .slide-enter-active,
-    .slide-leave-active{
-        transition: opacity 0.5s, transform 0.25s;
-    }
-    .slide-enter-from,
-    .slide-leave-to{
-        opacity: 0;
-        transform: translateX(-2%);
+    .container-navbar {
+        align-items: center !important;
+        padding: 0.8rem 1rem;
+        flex-basis: 100%;
+        transition: all .3s ease;
+        backface-visibility: hidden;
+        min-height: calc(100% - 3.35rem);
     }
 </style>

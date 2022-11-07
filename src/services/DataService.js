@@ -44,8 +44,16 @@ export default {
 
 //User
 addNewUser($data){
-  return axios.get('/api/users', $data)
-  // return apiClientSbr.post('/api/users', $data)
+  return axios.post('/api/users', $data)
+},
+updateUser($iduser, $data) {
+  return axios.put('/api/users/'+$iduser, $data)
+},
+deleteUser($iduser) {
+  return axios.delete('/api/users/'+$iduser)
+},
+updatePasswordUser($iduser, $data) {
+  return axios.put('/api/users/'+$iduser+'/security', $data)
 },
 
 //Assessment
@@ -91,9 +99,8 @@ addNewUser($data){
   getKegiatanData($id){
     return axios.get('/api/kegiatan/'+$id+'/dashboard/admin')
   },
-  getKegiatanDataUser($id){
-    return axios.get('/api/users/'+$id+'/dashboard')
-    // return axios.get('/api/users/'+$id+'/dashboard')
+  getKegiatanDataUser($id, $year){
+    return axios.get('/api/users/'+$id+'/dashboard?year='+$year)
   },
 
 
@@ -155,5 +162,31 @@ addNewUser($data){
         break;
     }
   }, 
+
+  /**
+   * 
+   * @param {*} $iduser 
+   * @param {*} $status -> inactive, active, done
+   * @returns 
+   */  
+  getDaftarKegiatanMatchingUser($iduser, $status='') {
+    return axios.get('/api/users/'+$iduser+'/matching?status='+$status)    
+  },
+
+  /**
+   * 
+   * @param {*} $iduser 
+   * @param {*} $status -> inactive, active, done
+   * @returns 
+   */  
+   getDaftarKegiatanAssessmentUser($iduser, $status='') {
+    return axios.get('/api/users/'+$iduser+'/assessment?status='+$status)    
+  },
+
+  getReportMatchingUser($iduser, $idkegiatan, $typeReport) {    
+    return axios.get('/api/users/'+$iduser+'/report/'+$typeReport+'/'+$idkegiatan)
+  }
+
+  
 
 }

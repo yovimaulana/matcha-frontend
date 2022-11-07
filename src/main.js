@@ -29,6 +29,10 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';
 import Dropdown from 'primevue/dropdown';
+import ConfirmationService from 'primevue/confirmationservice';
+import Tooltip from 'primevue/tooltip';
+import BadgeDirective from 'primevue/badgedirective';
+
 
 const token = localStorage.getItem('token');
 if (token) {
@@ -37,7 +41,7 @@ if (token) {
 
 store.dispatch('get_user', token)
   .then(() => {
-    const app = createApp(App).use(router).use(PrimeVue).use(store).use(ToastService)
+    const app = createApp(App).use(router).use(PrimeVue, {ripple: true}).use(store).use(ToastService).use(ConfirmationService)
 
       .component('Button', Button)
       .component('Sidebar', Sidebar)
@@ -47,12 +51,14 @@ store.dispatch('get_user', token)
       .component('Column', Column)
       .component('ColumnGroup', ColumnGroup)
       .component('Dropdown', Dropdown)
-
       .component('Card', Card)
 
     if (process.env.NODE_ENV === 'development') {
       app.config.performance = true;
     }
+
+    app.directive('tooltip', Tooltip);
+    app.directive('badge', BadgeDirective);
 
 
     app.mount('#app')

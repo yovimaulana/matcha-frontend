@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
         <div class="p-col-12 p-lg-12" style="padding-left:0; padding-right: 0">
             <div :class="'p-col-12 p-lg-12'">
@@ -93,7 +93,6 @@
                             <div class="p-col-12 p-mt-4">
                                 <ProgressBar style="color:white;"
                                     :value="((userSummary['sudah_assessment']/userSummary['total_data_assessment'])*100).toFixed(2)" />
-                                <!-- <ProgressBar style="color:white;" :value="(2/3*100).toFixed(2)" /> -->
                             </div>
                         </div>
                     </template>
@@ -101,10 +100,10 @@
 
 
             </div>
-        </div>
+        </div> -->
 
 
-        <br>
+        <!-- <br>
 
         <DataTable style="box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%); margin-left: 8px; margin-right: 8px"
             v-if="datas2nd !== null" :value="transposedData" :class="myCardBgColorData+' '+myTextColorData"
@@ -209,7 +208,6 @@
                             <div v-if="selectedData[Object.keys(this.data2View[0])[slotProps.index]].length > 1">
                                 <div v-for="(item,index) in selectedData[Object.keys(this.data2View[0])[slotProps.index]]"
                                     :key="item">
-                                    <!-- {{index}} : {{item}} <br> -->
                                     <div v-for="(item2, index2) in selectedData[Object.keys(this.data2View[0])[slotProps.index]][index]"
                                         :key="item2">
                                         {{index2}} : {{item2}} <br>
@@ -261,11 +259,6 @@
                             <h3 class="m-0">Data Assessment</h3>
                         </div>
                     </template>
-                    <!-- <Column style="width:25%" header="Sumber">
-                        <template #body="slotProps">
-                            Sumber {{slotProps.index+1}}
-                        </template>
-                    </Column> -->
                     <template v-if="this.display2ndVariabel.length !== 0">
                         <template v-for="mykey in Object.keys(display2ndVariabel[0])" :key="mykey">
                             <Column v-if="!['id', 'perusahaan_id', 'kbji_id'].includes(mykey)" style="width:25%"
@@ -319,9 +312,9 @@
                     @click="displayDialogObject = false; this.selectedData[this.displayKey] = this.displayVariabel"
                     autofocus />
             </template>
-        </Dialog>
+        </Dialog> -->
 
-        <Dialog header="Edit Key" v-model:visible="displayBasic3" :style="{width: '50vw'}">
+        <!-- <Dialog header="Edit Key" v-model:visible="displayBasic3" :style="{width: '50vw'}">
             <div v-if="(typeof editedValue == 'object')">
                 <div v-if="editedValue.length == null">
                     <div v-for="mykey in Object.keys(editedValue)" :key="mykey">
@@ -415,9 +408,9 @@
             <Message v-for="(error) in this.errorMessages" v-bind:key="error" severity="error">{{error}}</Message>
         </div>
 
-        <br>
+        <br> -->
 
-        <Button label="Submit" style="font-weight: 900;border-radius: 0.357rem;margin-left: 8px; margin-right: 8px"
+        <!-- <Button label="Submit" style="font-weight: 900;border-radius: 0.357rem;margin-left: 8px; margin-right: 8px"
             v-if="transposedData !== null" icon=""
             class="p-col-12 p-mb-2 p-ripple p-button-lg p-button-rounded p-button-raised" @click="submit()" /> <br>
         <Toast />
@@ -427,11 +420,11 @@
             <slot>
                 <MyLoading></MyLoading>
             </slot>
-        </Loading>
+        </Loading> -->
 
-    </div>
-</template>
-<script>
+    <!-- </div>
+</template> -->
+<!-- <script>
     import DataService from '../services/DataService'    
     import RadioButton from 'primevue/radiobutton'
     import InputText from 'primevue/inputtext'
@@ -1533,4 +1526,4 @@
         -webkit-animation-direction: normal, alternate;
         animation-direction: normal, alternate;
     }
-</style>
+</style> -->

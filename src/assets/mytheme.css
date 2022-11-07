@@ -9,7 +9,7 @@
     --text-color-secondary:#8a8d93;
     --primary-color:#9155fd;
     --primary-color-text:#ffffff;
-    --font-family: 'Poppins' !important;
+    --font-family: 'Montserrat' !important;
     --surface-0: #ffffff;
     --surface-50: #FAFAFA;
     --surface-100: #F5F5F5;
@@ -46,10 +46,20 @@
   
   * {
     box-sizing: border-box;
+    font-family: 'Montserrat';    
+  }
+
+  body {
+    background-color: #f8f8f8 !important;
+    height: 100vh;
+  }
+
+  #app {
+    height: 100vh;
   }
   
   .p-component {
-    font-family: 'Poppins' !important;
+    font-family: 'Montserrat' !important;
     font-size: 1rem;
     font-weight: normal;
   }
@@ -77,7 +87,7 @@
   
   .p-link {
     font-size: 1rem;
-    font-family: 'Poppins' !important;
+    font-family: 'Montserrat' !important;
     border-radius: 3px;
   }
   .p-link:focus {
@@ -236,7 +246,7 @@
     padding: 0.25rem 0;
   }
   .p-autocomplete .p-autocomplete-multiple-container .p-autocomplete-input-token input {
-    font-family: 'Poppins' !important;
+    font-family: 'Montserrat' !important;
     font-size: 1rem;
     color: #495057;
     padding: 0;
@@ -651,7 +661,7 @@
     padding: 0.25rem 0;
   }
   .p-chips .p-chips-multiple-container .p-chips-input-token input {
-    font-family: 'Poppins' !important;
+    font-family: 'Montserrat' !important;
     font-size: 1rem;
     color: #495057;
     padding: 0;
@@ -1006,7 +1016,7 @@
   }
   
   .p-inputtext {
-    font-family: 'Poppins' !important;
+    font-family: 'Montserrat' !important;
     font-size: 1rem;
     color: #495057;
     background: #ffffff;
@@ -5332,7 +5342,7 @@
   }
   .p-terminal .p-terminal-input {
     font-size: 1rem;
-    font-family: 'Poppins' !important;
+    font-family: 'Montserrat' !important;
   }
   
   /* Customizations to the designer theme should be defined here */
@@ -5343,4 +5353,17 @@
   .p-galleria .p-galleria-indicators .p-galleria-indicator.p-highlight button {
     background-color: #9155fd;
   }
+
+  .custom-breadcrumb {
+    border: none !important;
+    background: none !important;
+    font-size: 14px;
+  }
   
+  .custom-card-matcha {
+    width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 0.428rem !important;
+    box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+}

@@ -12,9 +12,9 @@
     <p  style="font-style: italic; ">
     <span>So little time, so <span style="font-weight: 900;color:#78b34d"> MatchA </span> to do</span></p>
     <router-link to="/">
-        <Button style="font-weight: 900;border-radius: 14px;" label="Skip" icon="pi pi-forward"
+        <!-- <Button style="font-weight: 900;border-radius: 14px;" label="Skip" icon="pi pi-forward"
             class=" p-button-success      p-ripple p-button-lg " @click="skip()">
-            <i class="pi pi-home p-mr-2"></i> MatchA </Button>
+            <i class="pi pi-home p-mr-2"></i> MatchA </Button> -->
     </router-link>
 </template>
 <style scoped>
