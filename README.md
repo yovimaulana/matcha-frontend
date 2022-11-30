@@ -1,4 +1,4 @@
-# hello-world
+# Matcha Frontend
 
 ## Project setup
 ```
